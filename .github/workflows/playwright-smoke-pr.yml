@@ -257,6 +257,13 @@ jobs:
               ].join('\n');
             }
 
+            function describeItem(item, index) {
+              if (typeof item === 'string') {
+                return `[${index}] kind=check_run`;
+              }
+              return `[${index}] kind=${item.kind || 'unknown'} id=${item.id || 'n/a'}`;
+            }
+
             // CRITICAL: Wait for Gemini's SECOND comment with "Code Review" heading AND severity labels.
             // The first comment is just "Summary of Changes" with no labels - we must NOT proceed on that.
             const start = Date.now();
@@ -268,9 +275,12 @@ jobs:
               const checkBodies = await fetchGeminiCheckRunBodies();
               allItems = [...bodies, ...checkBodies];
 
-              // DEBUG: Log what we're actually seeing
-              const allText = allItems.map((it) => combinedText(it)).join('\n---\n');
-              core.info(`DEBUG: Fetched ${allItems.length} Gemini items. Text sample (first 500 chars): ${allText.slice(0, 500)}`);
+              // DEBUG: Log what we're actually seeing (all items)
+              core.info(`DEBUG: Fetched ${allItems.length} Gemini items.`);
+              allItems.forEach((it, idx) => {
+                const text = combinedText(it);
+                core.info(`DEBUG: ${describeItem(it, idx)} text (first 800 chars): ${text.slice(0, 800)}`);
+              });
 
               // Gemini review is valid only when the SAME item has "Code Review" heading + severity label
               const hasCodeReview = allItems.some((it) => codeReviewRegex.test(combinedText(it)));
