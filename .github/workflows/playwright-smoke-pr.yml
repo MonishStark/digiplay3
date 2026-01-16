@@ -35,12 +35,16 @@ jobs:
           --health-retries=30
 
     env:
-      GEMINI_WAIT_SECONDS: 1200
-      GEMINI_POLL_SECONDS: 20
-
+      # Playwright
       BASE_URL: http://127.0.0.1:3011
+      TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
+      TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+
+      # Backend
       NODE_ENV: test
       PORT: "5050"
+      FRONTEND_BASE_URL: http://127.0.0.1:3011
+      BACKEND_URL: http://127.0.0.1:5050
 
       DATABASE_HOST: 127.0.0.1
       DATABASE_PORT: "3306"
@@ -48,6 +52,47 @@ jobs:
       DATABASE_PASSWORD: app
       DATABASE_NAME: team_ai
 
+      # Required for boot
+      LOG_FILE_PATH: ${{ github.workspace }}/backend/logs/ci.log
+      BACKEND_PATH: ${{ github.workspace }}/backend
+
+      # Avoid Redis dependencies in CI
+      CACHE_MODE: "0"
+      SEPERATE_FILE_UPLOAD_SERVER: "1"
+
+      # Auth
+      ACCESS_TOKEN_SECRET: ci_access_secret
+      REFRESH_TOKEN_SECRET: ci_refresh_secret
+      SALT_ROUND: "10"
+
+      # App data endpoint expects this to exist
+      CHAT_MESSAGES: "Hi|Hello"
+
+      # Stripe client is created at boot (needs a string)
+      STRIPE_SECRET_KEY: sk_test_ci_dummy
+
+      # OAuth strategies are registered at module load (need placeholder values)
+      GOOGLE_CLIENT_ID: ci_google_client_id
+      GOOGLE_CLIENT_SECRET: ci_google_client_secret
+      GOOGLE_OAUTH_REDIRECT_URL: http://127.0.0.1:5050/auth/google/callback
+      GOOGLE_DRIVE_OAUTH_REDIRECT_URL: http://127.0.0.1:5050/auth/google/drive/callback
+
+      MICROSOFT_TENANT_ID: common
+      MICROSOFT_CLIENT_ID: ci_microsoft_client_id
+      MICROSOFT_CLIENT_SECRET: ci_microsoft_client_secret
+      MICROSOFT_OAUTH_REDIRECT_URL: http://127.0.0.1:5050/auth/microsoft/callback
+
+      # Make chat smoke deterministic
+      DISABLE_AI: "1"
+
+      # Frontend
+      VITE_PORT: "3011"
+      VITE_APP_BACKEND_URL: http://127.0.0.1:5050
+      VITE_APP_BACKEND_ORIGIN_URL: http://127.0.0.1:5050
+      VITE_APP_PUBLIC_URL: http://127.0.0.1:3011
+      PUBLIC_URL: http://127.0.0.1:3011
+
+      # Email notifications (configure via secrets)
       SMTP_SERVER: premium49.web-hosting.com
       SMTP_PORT: "465"
       REPORT_FROM_MAIL: ${{ secrets.REPORT_FROM_MAIL }}
@@ -58,192 +103,415 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # =========================================================
-      # GEMINI GATE — WAIT UNTIL SEVERITY EXISTS (NOT SUMMARY)
-      # =========================================================
-      - name: Wait for Gemini Code Review with severity
+      - name: Check Gemini bot for High/Critical issues
         id: gemini_gate
         uses: actions/github-script@v7
         with:
           script: |
             const owner = context.repo.owner;
             const repo = context.repo.repo;
-            const pr = context.payload.pull_request;
-            if (!pr) {
-              core.setOutput("skip", "false");
-              core.setOutput("block", "false");
+            const issue_number = context.payload.pull_request?.number;
+            if (!issue_number) {
+              core.setOutput('block', 'false');
+              core.setOutput('summary', 'No PR context available (non-PR event).');
+              core.setOutput('details', '');
               return;
             }
 
-            const maxWait = Number(process.env.GEMINI_WAIT_SECONDS || 1200);
-            const poll = Number(process.env.GEMINI_POLL_SECONDS || 20);
-            const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+            const maxWaitSeconds = Number(process.env.GEMINI_WAIT_SECONDS || 900);
+            const pollSeconds = Number(process.env.GEMINI_POLL_SECONDS || 20);
+            const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-            // Gemini posts TWO comments:
-            // 1. "Summary of Changes" (first, no severity labels)
-            // 2. "Code Review" (second, WITH severity labels) <- WAIT FOR THIS
+            // Gemini posts 2 comments: (1) Summary of Changes (no labels), (2) Code Review (with labels)
+            // We MUST wait for the second one with labels before deciding.
             const codeReviewRegex = /\bcode\s+review\b/i;
-            const severityRegex =
-              /\b(security\s+(critical|high|medium|low)|critical|high\s*priority|medium\s*priority|low\s*priority)\b/i;
-            const highCriticalRegex =
-              /\b(security\s+(critical|high)|critical|high\s*priority)\b/i;
+            const severityLabelRegex = /\b(security\s+(critical|high|medium|low)|(critical|high|medium|low)\s*priority)\b/i;
+            
+            const highCriticalRegex = /\b(security\s+(critical|high)|critical|high\s*priority)\b/i;
+            const severeVulnRegex = /(remote\s+code\s+execution|\brce\b|arbitrary\s+code\s+execution|command\s+injection|sql\s+injection)/i;
 
-            const isGemini = (u) =>
-              (u || "").toLowerCase().includes("gemini-code-assist");
+            const isGeminiAuthor = (login) => (login || '').toLowerCase().includes('gemini-code-assist');
 
-            async function fetchAll() {
-              const comments = await github.paginate(
-                github.rest.issues.listComments,
-                { owner, repo, issue_number: pr.number }
-              );
+            const stripHtml = (html) => String(html || '').replace(/<[^>]*>/g, ' ');
 
-              const reviews = await github.paginate(
-                github.rest.pulls.listReviews,
-                { owner, repo, pull_number: pr.number }
-              );
+            // GitHub sometimes renders severity as UI badges (e.g. "Security High Priority")
+            // that only exist in HTML attributes and not in the markdown body.
+            const extractHtmlLabels = (html) => {
+              const h = String(html || '');
+              const labels = [];
+              for (const m of h.matchAll(/aria-label\s*=\s*"([^"]{1,160})"/gi)) labels.push(m[1]);
+              for (const m of h.matchAll(/title\s*=\s*"([^"]{1,160})"/gi)) labels.push(m[1]);
+              return [...new Set(labels)].join('\n');
+            };
 
-              const reviewComments = await github.paginate(
-                github.rest.pulls.listReviewComments,
-                { owner, repo, pull_number: pr.number }
-              );
-
-              return [...comments, ...reviews, ...reviewComments]
-                .filter(c => isGemini(c.user?.login))
-                .map(c => c.body || "");
+            async function fetchHtmlFor(endpoint, params) {
+              try {
+                const resp = await github.request(endpoint, {
+                  ...params,
+                  mediaType: { format: 'html' },
+                });
+                return resp?.data?.body_html ? String(resp.data.body_html) : '';
+              } catch (e) {
+                return '';
+              }
             }
 
+            async function fetchGeminiBodies() {
+              const out = [];
+
+              const issueComments = await github.paginate(github.rest.issues.listComments, {
+                owner,
+                repo,
+                issue_number,
+                per_page: 100,
+              });
+
+              const reviews = await github.paginate(github.rest.pulls.listReviews, {
+                owner,
+                repo,
+                pull_number: issue_number,
+                per_page: 100,
+              });
+
+              // Inline PR review comments are where GitHub shows the severity badge UI.
+              const reviewComments = await github.paginate(github.rest.pulls.listReviewComments, {
+                owner,
+                repo,
+                pull_number: issue_number,
+                per_page: 100,
+              });
+
+              for (const c of issueComments) {
+                if (!isGeminiAuthor(c.user?.login)) continue;
+                const body = c.body ? String(c.body) : '';
+                const bodyHtml = await fetchHtmlFor(
+                  'GET /repos/{owner}/{repo}/issues/comments/{comment_id}',
+                  { owner, repo, comment_id: c.id }
+                );
+                out.push({ kind: 'issue_comment', body, bodyHtml });
+              }
+
+              for (const r of reviews) {
+                if (!isGeminiAuthor(r.user?.login)) continue;
+                const body = r.body ? String(r.body) : '';
+                const bodyHtml = await fetchHtmlFor(
+                  'GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}',
+                  { owner, repo, pull_number: issue_number, review_id: r.id }
+                );
+                out.push({ kind: 'review', body, bodyHtml });
+              }
+
+              for (const rc of reviewComments) {
+                if (!isGeminiAuthor(rc.user?.login)) continue;
+                const body = rc.body ? String(rc.body) : '';
+                const bodyHtml = await fetchHtmlFor(
+                  'GET /repos/{owner}/{repo}/pulls/comments/{comment_id}',
+                  { owner, repo, comment_id: rc.id }
+                );
+                out.push({ kind: 'review_comment', body, bodyHtml });
+              }
+
+              return out;
+            }
+
+            async function fetchGeminiCheckRunBodies() {
+              const sha = context.payload.pull_request?.head?.sha;
+              if (!sha) return [];
+
+              try {
+                const resp = await github.rest.checks.listForRef({
+                  owner,
+                  repo,
+                  ref: sha,
+                  per_page: 100,
+                });
+
+                const runs = (resp.data.check_runs || []).filter((cr) => {
+                  const appSlug = (cr.app?.slug || '').toLowerCase();
+                  const name = (cr.name || '').toLowerCase();
+                  return appSlug.includes('gemini') || name.includes('gemini');
+                });
+
+                const out = [];
+                for (const run of runs) {
+                  const title = run.output?.title ? String(run.output.title) : '';
+                  const summary = run.output?.summary ? String(run.output.summary) : '';
+                  const text = run.output?.text ? String(run.output.text) : '';
+                  const combined = [title, summary, text].filter(Boolean).join('\n\n');
+                  if (combined) out.push(combined);
+                }
+                return out;
+              } catch (e) {
+                core.info(`Unable to read check-runs: ${e?.message || e}`);
+                return [];
+              }
+            }
+
+            function combinedText(item) {
+              if (typeof item === 'string') return String(item);
+              return [
+                item.body || '',
+                stripHtml(item.bodyHtml || ''),
+                extractHtmlLabels(item.bodyHtml || ''),
+              ].join('\n');
+            }
+
+            // CRITICAL: Wait for Gemini's SECOND comment with "Code Review" heading AND severity labels.
+            // The first comment is just "Summary of Changes" with no labels - we must NOT proceed on that.
             const start = Date.now();
-            let bodies = [];
-            let hasCodeReview = false;
-            let hasSeverity = false;
+            let allItems = [];
+            let ready = false;
+            
+            while (Date.now() - start < maxWaitSeconds * 1000) {
+              const bodies = await fetchGeminiBodies();
+              const checkBodies = await fetchGeminiCheckRunBodies();
+              allItems = [...bodies, ...checkBodies];
 
-            while ((Date.now() - start) / 1000 < maxWait) {
-              bodies = await fetchAll();
+              // DEBUG: Log what we're actually seeing
+              const allText = allItems.map((it) => combinedText(it)).join('\n---\n');
+              core.info(`DEBUG: Fetched ${allItems.length} Gemini items. Text sample (first 500 chars): ${allText.slice(0, 500)}`);
+
+              // Check if we have BOTH "Code Review" AND a severity label
+              const hasCodeReview = allItems.some((it) => codeReviewRegex.test(combinedText(it)));
+              const hasSeverityLabel = allItems.some((it) => severityLabelRegex.test(combinedText(it)));
               
-              // Must have BOTH "Code Review" heading AND severity labels
-              hasCodeReview = bodies.some(b => codeReviewRegex.test(b));
-              hasSeverity = bodies.some(b => severityRegex.test(b));
+              core.info(`DEBUG: hasCodeReview=${hasCodeReview}, hasSeverityLabel=${hasSeverityLabel}`);
               
-              core.info(`⏰ Gemini check: hasCodeReview=${hasCodeReview}, hasSeverity=${hasSeverity}`);
-              
-              if (hasCodeReview && hasSeverity) break;
-              
-              await sleep(poll * 1000);
+              ready = hasCodeReview && hasSeverityLabel;
+              if (ready) {
+                core.info(`✓ Gemini Code Review with severity labels detected after ${Math.round((Date.now() - start) / 1000)}s`);
+                // Extra delay to ensure inline comments are fully populated
+                await sleep(30000);
+                // Re-fetch after delay
+                const bodies2 = await fetchGeminiBodies();
+                const checkBodies2 = await fetchGeminiCheckRunBodies();
+                allItems = [...bodies2, ...checkBodies2];
+                break;
+              }
+
+              core.info(`Waiting for Gemini Code Review with severity labels... (${Math.round((Date.now() - start) / 1000)}s)`);
+              await sleep(pollSeconds * 1000);
             }
 
-            if (!hasCodeReview || !hasSeverity) {
-              core.setOutput("skip", "true");
-              core.setOutput("block", "false");
+            if (!ready) {
+              core.setOutput('block', 'true');
               core.setOutput(
-                "reason",
-                `Gemini labeled Code Review not ready (hasCodeReview=${hasCodeReview}, hasSeverity=${hasSeverity})`
+                'summary',
+                `Gemini Code Review with severity labels did not arrive within ${Math.round(maxWaitSeconds / 60)} minutes. Playwright was not executed to avoid false "no issues" run.`
               );
+              core.setOutput('details', '');
               return;
             }
 
-            const blocking = bodies.filter(b => highCriticalRegex.test(b));
-            core.setOutput("skip", "false");
-            core.setOutput("block", blocking.length > 0 ? "true" : "false");
-            core.setOutput("summary", blocking.join("\n").slice(0, 3000));
+            const allBodies = allItems.map((it) => combinedText(it));
 
-            const blocking = bodies.filter(b => highCriticalRegex.test(b));
-            core.setOutput("skip", "false");
-            core.setOutput("block", blocking.length > 0 ? "true" : "false");
-            core.setOutput("summary", blocking.join("\n").slice(0, 3000));
+            const findings = [];
+            for (const body of allBodies) {
+              const lines = String(body).split(/\r?\n/);
+              for (const line of lines) {
+                if (highCriticalRegex.test(line) || severeVulnRegex.test(line)) {
+                  const trimmed = line.trim();
+                  if (trimmed) findings.push(trimmed.slice(0, 300));
+                }
+              }
+            }
 
-      # =========================================================
-      # BLOCKING EMAIL (CRITICAL / HIGH)
-      # =========================================================
-      - name: Notify – Playwright SKIPPED (Gemini Critical/High)
+            const unique = [...new Set(findings)].slice(0, 25);
+            const block = unique.length > 0;
+            core.setOutput('block', block ? 'true' : 'false');
+            core.setOutput('summary', unique.join('\n'));
+
+            const MAX_DETAILS = 4000;
+            const joined = allBodies.join('\n\n---\n\n');
+            core.setOutput('details', joined.length > MAX_DETAILS ? `${joined.slice(0, MAX_DETAILS)}\n\n...[truncated]` : joined);
+
+      - name: Notify - Playwright skipped (Gemini High/Critical)
         if: steps.gemini_gate.outputs.block == 'true'
+        continue-on-error: true
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: ${{ env.SMTP_SERVER }}
           server_port: ${{ env.SMTP_PORT }}
           username: ${{ env.REPORT_FROM_MAIL }}
           password: ${{ env.REPORT_FROM_PASSWORD }}
+          subject: "DigiBot - Playwright SKIPPED (Gemini High/Critical) - PR #${{ github.event.pull_request.number }}"
           to: ${{ env.REPORT_TO_MAILS }}
           from: "DigiBot Automation"
-          subject: "DigiBot – Playwright SKIPPED (Gemini Critical/High) – PR #${{ github.event.pull_request.number }}"
           body: |
             Playwright was NOT executed.
 
-            Reason:
-            Gemini Code Assist reported CRITICAL or HIGH severity issues.
+            Reason: Gemini bot reported High/Critical issues.
 
-            Details:
+            Issues:
             ${{ steps.gemini_gate.outputs.summary }}
 
-      - name: Stop workflow (Critical/High)
+            Gemini details:
+            ${{ steps.gemini_gate.outputs.details }}
+
+            Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      - name: Stop workflow due to High/Critical issues
         if: steps.gemini_gate.outputs.block == 'true'
-        run: exit 1
+        run: |
+          echo "Blocking issues reported by Gemini bot; skipping Playwright." >&2
+          exit 1
 
-      - name: Stop workflow (Gemini timeout)
-        if: steps.gemini_gate.outputs.skip == 'true'
-        run: exit 1
-
-      # =========================================================
-      # SAFE → START PLAYWRIGHT
-      # =========================================================
-      - name: Notify – No High/Critical issues (Playwright starting)
-        if: steps.gemini_gate.outputs.skip != 'true'
+      - name: Notify - No High/Critical issues (Playwright starting)
+        if: steps.gemini_gate.outputs.block != 'true'
+        continue-on-error: true
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: ${{ env.SMTP_SERVER }}
           server_port: ${{ env.SMTP_PORT }}
           username: ${{ env.REPORT_FROM_MAIL }}
           password: ${{ env.REPORT_FROM_PASSWORD }}
+          subject: "DigiBot - No High/Critical issues (Gemini) - Playwright starting - PR #${{ github.event.pull_request.number }}"
           to: ${{ env.REPORT_TO_MAILS }}
           from: "DigiBot Automation"
-          subject: "DigiBot – No High/Critical issues (Gemini) – Playwright starting – PR #${{ github.event.pull_request.number }}"
           body: |
-            Gemini Code Assist reported no Critical or High issues.
+            Gemini bot reported no High/Critical issues.
             Playwright execution has started.
 
-      # =========================================================
-      # PLAYWRIGHT (UNCHANGED FROM HERE)
-      # =========================================================
+            Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+            e2e/package-lock.json
+
+      - name: Wait for MySQL
+        if: steps.gemini_gate.outputs.block != 'true'
+        run: |
+          for i in {1..60}; do
+            mysqladmin ping -h 127.0.0.1 -u root -proot && exit 0
+            sleep 2
+          done
+          echo "MySQL did not become ready" >&2
+          exit 1
+
+      - name: Init DB schema + seed base data
+        if: steps.gemini_gate.outputs.block != 'true'
+        run: |
+          mysql -h 127.0.0.1 -u root -proot team_ai < sql/dml.sql
+
+      - name: Install backend deps
+        if: steps.gemini_gate.outputs.block != 'true'
+        working-directory: backend
+        run: npm ci --legacy-peer-deps
+
+      - name: Seed CI test user
+        if: steps.gemini_gate.outputs.block != 'true'
+        working-directory: backend
+        run: node scripts/seed-ci.js
+
+      - name: Start backend
+        if: steps.gemini_gate.outputs.block != 'true'
+        working-directory: backend
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/backend/logs"
+          node server.js > "$GITHUB_WORKSPACE/backend/logs/backend.stdout.log" 2>&1 &
+          echo $! > "$GITHUB_WORKSPACE/backend/logs/backend.pid"
+
+      - name: Install frontend deps
+        if: steps.gemini_gate.outputs.block != 'true'
+        working-directory: frontend
+        run: npm ci --legacy-peer-deps
+
+      - name: Build frontend
+        if: steps.gemini_gate.outputs.block != 'true'
+        working-directory: frontend
+        run: npm run build
+
+      - name: Start frontend (preview)
+        if: steps.gemini_gate.outputs.block != 'true'
+        working-directory: frontend
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 3011 --strictPort > "$GITHUB_WORKSPACE/frontend/preview.stdout.log" 2>&1 &
+          echo $! > "$GITHUB_WORKSPACE/frontend/preview.pid"
+
+      - name: Wait for backend + frontend
+        if: steps.gemini_gate.outputs.block != 'true'
+        run: |
+          echo "Waiting for backend..."
+          for i in {1..60}; do
+            curl -fsS http://127.0.0.1:5050/app-data >/dev/null && break
+            sleep 2
+          done
+          curl -fsS http://127.0.0.1:5050/app-data >/dev/null
+
+          echo "Waiting for frontend..."
+          for i in {1..60}; do
+            curl -fsS http://127.0.0.1:3011 >/dev/null && break
+            sleep 2
+          done
+          curl -fsS http://127.0.0.1:3011 >/dev/null
 
       - name: Install e2e deps
+        if: steps.gemini_gate.outputs.block != 'true'
         working-directory: e2e
         run: npm ci
 
       - name: Install Playwright browsers
+        if: steps.gemini_gate.outputs.block != 'true'
         working-directory: e2e
         run: npx playwright install --with-deps chromium
 
       - name: Run Playwright smoke tests
+        if: steps.gemini_gate.outputs.block != 'true'
         id: playwright
         working-directory: e2e
         run: npx playwright test
 
       - name: Zip Playwright report
-        if: always()
+        if: always() && steps.gemini_gate.outputs.block != 'true'
         run: |
-          if [ -d "e2e/playwright-report" ]; then
+          if [ -d "e2e/playwright-report" ] && [ -f "e2e/playwright-report/index.html" ]; then
+            sudo apt-get update >/dev/null
             sudo apt-get install -y zip >/dev/null
-            (cd e2e && zip -r playwright-report.zip playwright-report)
-            echo "REPORT_ZIP=e2e/playwright-report.zip" >> $GITHUB_ENV
+            (cd e2e && zip -r playwright-report.zip playwright-report >/dev/null)
+            echo "REPORT_ZIP=e2e/playwright-report.zip" >> "$GITHUB_ENV"
+          else
+            echo "REPORT_ZIP=" >> "$GITHUB_ENV"
           fi
 
-      - name: Notify – Final Playwright status
-        if: always()
+      - name: Notify - Final Playwright status
+        if: always() && steps.gemini_gate.outputs.block != 'true'
+        continue-on-error: true
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: ${{ env.SMTP_SERVER }}
           server_port: ${{ env.SMTP_PORT }}
           username: ${{ env.REPORT_FROM_MAIL }}
           password: ${{ env.REPORT_FROM_PASSWORD }}
+          subject: "DigiBot - Playwright ${{ steps.playwright.outcome == 'success' && 'PASSED' || 'FAILED' }} - PR #${{ github.event.pull_request.number }}"
           to: ${{ env.REPORT_TO_MAILS }}
           from: "DigiBot Automation"
-          subject: "DigiBot – Playwright ${{ steps.playwright.outcome == 'success' && 'PASSED' || 'FAILED' }} – PR #${{ github.event.pull_request.number }}"
           body: |
             Playwright execution completed.
 
             Final status: ${{ steps.playwright.outcome == 'success' && 'PASSED' || 'FAILED' }}
             Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            The Playwright HTML report is attached if it was generated.
           attachments: ${{ env.REPORT_ZIP }}
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: e2e/playwright-report
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-logs
+          path: |
+            backend/logs
+            frontend/preview.stdout.log
