@@ -124,7 +124,8 @@ jobs:
 
             // Gemini posts 2 comments: (1) Summary of Changes (no labels), (2) Code Review (with labels)
             // We MUST wait for the second one with labels before deciding.
-            const codeReviewRegex = /\bcode\s+review\b/i;
+            // Match only explicit "Code Review" headings to avoid "reviewing" in Summary
+            const codeReviewRegex = /^#{1,3}\s*code\s+review\b/im;
             const severityLabelRegex = /\b(security\s+(critical|high|medium|low)|(critical|high|medium|low)\s*priority)\b/i;
             
             const highCriticalRegex = /\b(security\s+(critical|high)|critical|high\s*priority)\b/i;
@@ -271,13 +272,17 @@ jobs:
               const allText = allItems.map((it) => combinedText(it)).join('\n---\n');
               core.info(`DEBUG: Fetched ${allItems.length} Gemini items. Text sample (first 500 chars): ${allText.slice(0, 500)}`);
 
-              // Check if we have BOTH "Code Review" AND a severity label
+              // Gemini review is valid only when the SAME item has "Code Review" heading + severity label
               const hasCodeReview = allItems.some((it) => codeReviewRegex.test(combinedText(it)));
               const hasSeverityLabel = allItems.some((it) => severityLabelRegex.test(combinedText(it)));
+              const hasReviewWithSeverity = allItems.some((it) => {
+                const text = combinedText(it);
+                return codeReviewRegex.test(text) && severityLabelRegex.test(text);
+              });
               
-              core.info(`DEBUG: hasCodeReview=${hasCodeReview}, hasSeverityLabel=${hasSeverityLabel}`);
+              core.info(`DEBUG: hasCodeReview=${hasCodeReview}, hasSeverityLabel=${hasSeverityLabel}, hasReviewWithSeverity=${hasReviewWithSeverity}`);
               
-              ready = hasCodeReview && hasSeverityLabel;
+              ready = hasReviewWithSeverity;
               if (ready) {
                 core.info(`✓ Gemini Code Review with severity labels detected after ${Math.round((Date.now() - start) / 1000)}s`);
                 // Extra delay to ensure inline comments are fully populated
