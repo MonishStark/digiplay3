@@ -1,0 +1,249 @@
+name: PR Smoke (Playwright)
+
+on:
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+  checks: read
+
+concurrency:
+  group: pr-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  playwright-smoke:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: team_ai
+          MYSQL_USER: app
+          MYSQL_PASSWORD: app
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=30
+
+    env:
+      GEMINI_WAIT_SECONDS: 1200
+      GEMINI_POLL_SECONDS: 20
+
+      BASE_URL: http://127.0.0.1:3011
+      NODE_ENV: test
+      PORT: "5050"
+
+      DATABASE_HOST: 127.0.0.1
+      DATABASE_PORT: "3306"
+      DATABASE_USER_NAME: app
+      DATABASE_PASSWORD: app
+      DATABASE_NAME: team_ai
+
+      SMTP_SERVER: premium49.web-hosting.com
+      SMTP_PORT: "465"
+      REPORT_FROM_MAIL: ${{ secrets.REPORT_FROM_MAIL }}
+      REPORT_FROM_PASSWORD: ${{ secrets.REPORT_FROM_PASSWORD }}
+      REPORT_TO_MAILS: ${{ secrets.REPORT_TO_MAILS }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # =========================================================
+      # GEMINI GATE — WAIT UNTIL SEVERITY EXISTS (NOT SUMMARY)
+      # =========================================================
+      - name: Wait for Gemini Code Review with severity
+        id: gemini_gate
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const pr = context.payload.pull_request;
+            if (!pr) {
+              core.setOutput("skip", "false");
+              core.setOutput("block", "false");
+              return;
+            }
+
+            const maxWait = Number(process.env.GEMINI_WAIT_SECONDS || 1200);
+            const poll = Number(process.env.GEMINI_POLL_SECONDS || 20);
+            const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+            // Gemini posts TWO comments:
+            // 1. "Summary of Changes" (first, no severity labels)
+            // 2. "Code Review" (second, WITH severity labels) <- WAIT FOR THIS
+            const codeReviewRegex = /\bcode\s+review\b/i;
+            const severityRegex =
+              /\b(security\s+(critical|high|medium|low)|critical|high\s*priority|medium\s*priority|low\s*priority)\b/i;
+            const highCriticalRegex =
+              /\b(security\s+(critical|high)|critical|high\s*priority)\b/i;
+
+            const isGemini = (u) =>
+              (u || "").toLowerCase().includes("gemini-code-assist");
+
+            async function fetchAll() {
+              const comments = await github.paginate(
+                github.rest.issues.listComments,
+                { owner, repo, issue_number: pr.number }
+              );
+
+              const reviews = await github.paginate(
+                github.rest.pulls.listReviews,
+                { owner, repo, pull_number: pr.number }
+              );
+
+              const reviewComments = await github.paginate(
+                github.rest.pulls.listReviewComments,
+                { owner, repo, pull_number: pr.number }
+              );
+
+              return [...comments, ...reviews, ...reviewComments]
+                .filter(c => isGemini(c.user?.login))
+                .map(c => c.body || "");
+            }
+
+            const start = Date.now();
+            let bodies = [];
+            let hasCodeReview = false;
+            let hasSeverity = false;
+
+            while ((Date.now() - start) / 1000 < maxWait) {
+              bodies = await fetchAll();
+              
+              // Must have BOTH "Code Review" heading AND severity labels
+              hasCodeReview = bodies.some(b => codeReviewRegex.test(b));
+              hasSeverity = bodies.some(b => severityRegex.test(b));
+              
+              core.info(`⏰ Gemini check: hasCodeReview=${hasCodeReview}, hasSeverity=${hasSeverity}`);
+              
+              if (hasCodeReview && hasSeverity) break;
+              
+              await sleep(poll * 1000);
+            }
+
+            if (!hasCodeReview || !hasSeverity) {
+              core.setOutput("skip", "true");
+              core.setOutput("block", "false");
+              core.setOutput(
+                "reason",
+                `Gemini labeled Code Review not ready (hasCodeReview=${hasCodeReview}, hasSeverity=${hasSeverity})`
+              );
+              return;
+            }
+
+            const blocking = bodies.filter(b => highCriticalRegex.test(b));
+            core.setOutput("skip", "false");
+            core.setOutput("block", blocking.length > 0 ? "true" : "false");
+            core.setOutput("summary", blocking.join("\n").slice(0, 3000));
+
+            const blocking = bodies.filter(b => highCriticalRegex.test(b));
+            core.setOutput("skip", "false");
+            core.setOutput("block", blocking.length > 0 ? "true" : "false");
+            core.setOutput("summary", blocking.join("\n").slice(0, 3000));
+
+      # =========================================================
+      # BLOCKING EMAIL (CRITICAL / HIGH)
+      # =========================================================
+      - name: Notify – Playwright SKIPPED (Gemini Critical/High)
+        if: steps.gemini_gate.outputs.block == 'true'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ env.SMTP_SERVER }}
+          server_port: ${{ env.SMTP_PORT }}
+          username: ${{ env.REPORT_FROM_MAIL }}
+          password: ${{ env.REPORT_FROM_PASSWORD }}
+          to: ${{ env.REPORT_TO_MAILS }}
+          from: "DigiBot Automation"
+          subject: "DigiBot – Playwright SKIPPED (Gemini Critical/High) – PR #${{ github.event.pull_request.number }}"
+          body: |
+            Playwright was NOT executed.
+
+            Reason:
+            Gemini Code Assist reported CRITICAL or HIGH severity issues.
+
+            Details:
+            ${{ steps.gemini_gate.outputs.summary }}
+
+      - name: Stop workflow (Critical/High)
+        if: steps.gemini_gate.outputs.block == 'true'
+        run: exit 1
+
+      - name: Stop workflow (Gemini timeout)
+        if: steps.gemini_gate.outputs.skip == 'true'
+        run: exit 1
+
+      # =========================================================
+      # SAFE → START PLAYWRIGHT
+      # =========================================================
+      - name: Notify – No High/Critical issues (Playwright starting)
+        if: steps.gemini_gate.outputs.skip != 'true'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ env.SMTP_SERVER }}
+          server_port: ${{ env.SMTP_PORT }}
+          username: ${{ env.REPORT_FROM_MAIL }}
+          password: ${{ env.REPORT_FROM_PASSWORD }}
+          to: ${{ env.REPORT_TO_MAILS }}
+          from: "DigiBot Automation"
+          subject: "DigiBot – No High/Critical issues (Gemini) – Playwright starting – PR #${{ github.event.pull_request.number }}"
+          body: |
+            Gemini Code Assist reported no Critical or High issues.
+            Playwright execution has started.
+
+      # =========================================================
+      # PLAYWRIGHT (UNCHANGED FROM HERE)
+      # =========================================================
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install e2e deps
+        working-directory: e2e
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: e2e
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright smoke tests
+        id: playwright
+        working-directory: e2e
+        run: npx playwright test
+
+      - name: Zip Playwright report
+        if: always()
+        run: |
+          if [ -d "e2e/playwright-report" ]; then
+            sudo apt-get install -y zip >/dev/null
+            (cd e2e && zip -r playwright-report.zip playwright-report)
+            echo "REPORT_ZIP=e2e/playwright-report.zip" >> $GITHUB_ENV
+          fi
+
+      - name: Notify – Final Playwright status
+        if: always()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ env.SMTP_SERVER }}
+          server_port: ${{ env.SMTP_PORT }}
+          username: ${{ env.REPORT_FROM_MAIL }}
+          password: ${{ env.REPORT_FROM_PASSWORD }}
+          to: ${{ env.REPORT_TO_MAILS }}
+          from: "DigiBot Automation"
+          subject: "DigiBot – Playwright ${{ steps.playwright.outcome == 'success' && 'PASSED' || 'FAILED' }} – PR #${{ github.event.pull_request.number }}"
+          body: |
+            Playwright execution completed.
+
+            Final status: ${{ steps.playwright.outcome == 'success' && 'PASSED' || 'FAILED' }}
+            Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          attachments: ${{ env.REPORT_ZIP }}

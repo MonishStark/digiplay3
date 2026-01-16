@@ -1,0 +1,32 @@
+Cpanel Setup:
+"""""""""""""
+
+Frontend setup:
+"""""""""""""""
+1) In the repo root directory, navigate in to code->frontend folder and run the command "npm install". This will install all the required dependencies.
+2) Update the api base-url in .env file by adding "/api" except in REACT_APP_BACKEND_ORIGIN_URL and update the homepage to /demo in package.json file.
+3) To create a production build, run "npm run build".
+4) After cloning and generating production build locally now open cPanel.
+5) Open the file manager and under the /www/demo directory of cPanel upload the contents of the build folder.
+6) Once uploaded you can test the application by hitting the URL 'https://your-domain/demo'.
+
+
+Backend and Database setup:
+"""""""""""""""""""""""""""
+1) Login to the Cpanel and search for Node.js Application.
+2) You will find the "Setup NodeJs" option in the search result. Click on it.
+3) Now click on the "Create Application" button.
+4) Now choose the Node.js version v18.15.0 from the available list and other details such as Application mode, Application root (backend), Application URL and Application startup file.
+5) For the Application startup file field, enter "server.js" and select Application mode as production, now update the FRONTEND_BASE_URL and folder's path in .env file.
+7) Now navigate to the file manager and open the backend folder.
+8) In server.js file update the endpoints by adding "/api/" infront of each routes so that our backend endpoint becomes "https://your-domain/api".
+9) Then move the files and folders from the backend folder of our repository to the Application backend folder.
+10) Create tempImage, tempCsv, documents & tempText folders inside application backend folder.
+11) Now go the Cpanel tools and click on the "MYSQL Databases" and then create a new database with name "team_ai".
+12) Then you can create a new user and assign this new user to manage this database.
+13) Now navigate into the newly created database via "phpMyAdmin" and import the dml.sql file from our repository's "sql" folder.
+14) This will create a necessary tables on the database.
+15) Now go back to nodeJs application root folder via file manager and make sure to update the environmental variables such as database information, fronend base URL etc., on the .env file.
+16) Select our created nodejs application.
+17) Now select the npm install option.
+18) Finally, start the server.

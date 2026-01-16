@@ -1,0 +1,318 @@
+Cloning:
+""""""""
+Clone the 'digibot' repository.
+
+Localhost setup:
+""""""""""""""""
+Backend and Database setup:(NodeJs)
+"""""""""""""""""""""""""""""""""""
+1) Navigate into the backend root directory and run the command "npm install". This will install all the required dependencies.
+2) Install and run the XAMPP server.
+3) Open the PhpMyAdmin and create a new database.
+4) Now import the SQL file (dml.sql) from "sql" directory under the project folder. This will create user and its meta table on the database.
+5) Make sure to update the env variable such as FRONTEND_BASE_URL, MAIL_ADDRESS, MAIL_PASSWORD, TOKEN_SECRET and Database information on .env file.
+6) Make sure to install the latest stable version of node on your computer.
+7) To start the backend server, run "node server.js". If everything is successful, you'll see a message "app is listening on port 5050" on the terminal.
+8) Make sure to configure the correct path on the .env file.
+9) Create the required folders (documents, tempCsv, tempImagesand tempText) in the root directory of the backed application.
+
+Frontend setup:(ReactJs)
+""""""""""""""""""""""""
+1) In the repo root directory, navigate in to code->frontend folder and run the command "npm install". This will install all the required dependencies.
+2) Open the .env file and provide the backend base url (for both REACT_APP_BACKEND_URL and REACT_APP_API_USER_IMAGE_URL).
+3) To start the development server, run "npm run dev".
+4) To create a production build, run "npm run build".
+5) Before creating the production build, make sure to update the folder name (homepage property in package.json file) from which we are going to server build files and folders.
+6) You can create a new folder (folder name must be same as the step 4) on the htdocs folder under xampp. Then start the xampp server and by hitting the correct URL, you can view the application.
+
+
+Redis Setup
+"""""""""""
+
+To install Redis on Windows follow the steps provided in the below link:
+
+https://redis.io/docs/install/install-redis/install-redis-on-windows/
+
+Make sure to run the following command to start the redis server: "sudo service redis-server start" 
+
+Note: Start the redis server before starting the backend.
+
+Stripe setup:
+"""""""""""""
+Local setup:
+""""""""""""
+We can only test the stripe webhooks when the backend server is hosted in the public URL.
+
+So to test the webhooks on the local, we need a library with which we can host our application locally.
+
+For this, we can use a library called Ngrok.
+
+To install Ngrok please refer the below link:
+
+https://ngrok.com/docs/getting-started/?os=windows
+
+Once install, execute the .exe file. This will open a terminal, then run the below command:
+
+ngrok http 5050
+
+The above command will make the apllication running on port 5050 public. Then copy the forwarding URL, it should look like below:
+
+Forwarding                    https://0313-106-197-172-240.ngrok-free.app -> http://localhost:5050
+
+Only copy upto "https://0313-106-197-172-240.ngrok-free.app"
+
+Now create a stripe account and create a new project on the top left select menu and select it.
+
+Make sure the test mode is enabled on the top right.
+
+Now create a products on pricing table, to do that click "More +" option on dashboard side bar, then click "Product Catalog".
+
+Now add new products, in our case we need to create 3 products:
+
+1) Solo -> $9 -> Recurring
+2) Team -> $79 -> Recurring
+
+Once created, go to the phpmyadmin and open the "subscription-packages" table.
+
+Then, update the priceId for solo (priceId of Solo), and team (priceId of Team).
+
+You will be able to find the price Id on the product detail page of the products you created on the stripe.
+
+It should look like the following format: "price_1OSyr9EdBoWbUwLVM5FjkGJM"
+
+Now click the developer menu on the top right and then go to API keys section.
+
+Now create a standard keys, this will create a "Publishable key" & "Secret key".
+
+Copy only the secret key and paste it on the backend .env file under "STRIPE_SECRET_KEY" variable.
+
+Now go to "Webhooks" section and click Add endpoint button.
+
+Now enter the endpoint URL we copied "https://0313-106-197-172-240.ngrok-free.app". Additionally add the "/stripe/webhook".
+
+So the final endpoint should be "https://0313-106-197-172-240.ngrok-free.app/stripe/webhook"
+
+Then for "Listen to" -> set it as "Events on your account".
+
+For "Select events to listen to" -> select "Select events" ->
+Checkout -> checkout.session.completed,
+Customer -> customer.subscription.deleted,
+Invoice -> invoice.payment_failed,
+Invoice -> invoice.payment_succeeded
+
+Finally click "Add events", this will create a new Webhook listener.
+
+Now copy the "Signing secret" by clicking "Reveal" and then copy.
+
+Now paste the "Signing secret" on the .env file under "STRIPE_ENDPOINT_SECRET" variable.
+
+Thats it. Now all the webhook events will be monitored and notified to the specified URL (in our case "https://0313-106-197-172-240.ngrok-free.app/stripe/webhook")
+
+Also, whenever you restart the "ngrok", the forwarding URL will change. Make sure to update this URL on the stripe account as well.
+
+To do this, select the webhook you created and click "..." menu on the top right and click "Update details".
+
+Then update your new endpoint URL.
+
+SSO SETUP:
+''''''''''
+Google:
+'''''''
+Step-1:
+Go to GCP Dashboard => APIs & Services => OAuth Concent Screen => { Select external -> Enter App Name -> Select Support Email -> Enter Developer email -> Save & Continue -> Save} 
+Step-2:
+Go to GCP Dashboard => APIs & Services => Credentials => Create Credentials => OAuth Client ID => { Application Type (Web Application) -> Enter Name -> Authorized JavaScript origins > Add(http://localhost:3011) -> Authorized redirect URIs > Add(http://localhost:5050/auth/google/callback) -> Cilck Save}
+Step-3: Note Down the client id and client secret. Update the following in env file GOOGLE_OAUTH_REDIRECT_URL, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
+
+Microsoft:
+''''''''''
+1. Go to the https://portal.azure.com/
+2. Navigate to Azure Active Directory and select "App registrations" and register a new application.
+3. Enter the name, select option (Any Azure AD directory - Multitenant and personal Microsoft accounts), enter redirect URI (http://localhost:5050/auth/microsoft/callback) and Click register.
+4. Note down the Application (client) ID, Directory (tenant) ID.
+5. After registering application, navigate to the "Certificates & secrets" tab.
+6. Under the "Client secrets" section, click on "New client secret".
+7. Enter a description for secret and choose an expiration duration.
+8. Click on "Add" to generate the client secret.
+9. Once generated, note down the value of the client secret.
+10. Update the following in env file MICROSOFT_OAUTH_REDIRECT_URL, MICROSOFT_CLIENT_ID, MICROSOFT_CLIENT_SECRET, MICROSOFT_TENANT_ID.
+
+Google Cloud Storage Setup:
+'''''''''''''''''''''''''''
+1. Go to the Google Cloud Console: https://console.cloud.google.com/, select the project.
+2. In the Google Cloud Console, navigate to the "APIs & Services" > "Library" page.
+3. Search for "Cloud Storage API" and select it from the results and Click the "Enable" button.
+4. In the Google Cloud Console, navigate to the "IAM & Admin" > "Service accounts" page.
+5. Click the "Create Service Account" button.
+6. Enter a name and description for service account, then click "Create".
+7. Assign the necessary roles to service account. Assign "Cloud Storage Admin" role to access the Cloud Storage API. Assign "storage.buckets.list, storage.buckets.get, storage.buckets.create, storage.buckets.update, and storage.buckets.delete" role to access the Google Cloud Storage API.
+8. Click "Continue" and then "Done".
+9. Find the service account you created on the "Service accounts" page in the Google Cloud Console.
+10. Click on the service account's email address.
+11. Navigate to the "Keys" tab.
+12. Click the "Add Key" drop-down menu and select "Create new key".
+14. Choose the JSON key type and click "Create".
+15. Save the downloaded JSON file securely. Use the JSON key file to authenticate application.
+16. Go to the Google Cloud Storage.
+17. Click on the "Create bucket" button.
+18. Enter a name for bucket.
+19. Choose a default storage class.
+20. Choose a location where you want your data to be stored.
+21. Click "Create".
+22. Update the following in env file GOOGLE_CREDENTIALS (path of JSON file), GOOGLE_STORAGE_BUCKET_NAME.
+23. Open cloud shell.
+24. Create cors-config.json and update the origin (FRONTEND_BASE_URL) in it
+[
+    {
+      "origin": ["FRONTEND_BASE_URL"], 
+      "method": ["GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"],
+      "responseHeader": ["Content-Type", "Authorization"],
+      "maxAgeSeconds": 3600
+    }
+]
+25. Use the command to update the cors policy of the bucket "gcloud storage buckets update gs://%bucket-name% --cors-file=%uploaded-cors-file-name%"
+
+Google Cloud SQL setup:
+'''''''''''''''''''''''
+1. Go to the Google Cloud Console: https://console.cloud.google.com/, select the project.
+2. In the Google Cloud Console, navigate to the "APIs & Services" > "Library" page.
+3. Search for "Cloud SQL Admin API" and select it from the results.
+4. Click the "Enable" button.
+5. Create a Cloud SQL Instance.
+6. Configure your instance.
+7. Update the DATABASE_HOST with the public IP address of the Cloud SQL Instance.
+8. Update the DATABASE_NAME, DATABASE_USER_NAME, DATABASE_PASSWORD in the env file.
+9. Go to Cloud SQL->Connections->Networking and add your IP address in the Authorized networks.
+
+BigQuery Setup:
+'''''''''''''''
+
+1. Go to https://console.cloud.google.com/ and select your project.
+2. Navigate to APIs & Services → Library. Enable the following APIs:
+    BigQuery API
+    BigQuery Connection API
+3. Navigate to BigQuery → Create Dataset.
+    Dataset ID: digibot
+    Location: the location you saved for Bucket
+    Click Create Dataset.
+4. Open Cloud Shell in your GCP project.
+    Run the command to create the connection (replace PROJECT_ID and myconnection):
+    gcloud bigquery connections create myconnection \
+    --connection-type=CLOUD_RESOURCE \
+    --location=us-central1 \
+    --project=PROJECT_ID
+        
+    Note the service account that gets created automatically.
+    The command will output something like:
+        Created connection [us-central1.myconnection].
+        Connection service account: bqcx-12345@...gserviceaccount.com
+        
+5. Grant the service account access to your Cloud Storage bucket:
+    gsutil iam ch \
+    serviceAccount:bqcx-12345@gcp-sa-bigquery-condel.iam.gserviceaccount.com:roles/storage.admin \
+    gs://BUCKET_NAME
+
+6. IAM Permissions Setup
+    1. BigQuery Connection Service Account
+        Go to Google Cloud Console → IAM & Admin → IAM.
+        In the principals list, search for the connection service account email (e.g. bqcx-12345@gcp-sa-bigquery-condel.iam.gserviceaccount.com).
+        If it already exists → click the pencil icon (edit) and check if the roles below are already assigned.
+        If not assigned → add them.
+        If it does not exist → click Grant Access, enter the service account email, and assign the roles.
+        Assign these roles (if not already assigned):
+            BigQuery Connection User
+            Vertex AI User
+        Click Save.
+    2. Your Service Account
+        In the principals list, search for your service account email.
+        If it already exists → click the pencil icon (edit) and check if the roles below are already assigned.
+        If not assigned → add them.
+        If it does not exist → click Grant Access, enter your service account email, and assign the roles.
+        Assign these roles (if not already assigned):
+            BigQuery Connection User
+            BigQuery Data Editor
+            BigQuery Job User
+            Storage Admin
+            Storage Object Creator
+            Vertex AI User
+            Click Save.
+
+7. Navigate to BigQuery → Datasets → Digibot and open sql query.
+     CREATE TABLE IF NOT EXISTS `digibot-413403.digibot.embeddings` (
+  id STRING,
+  namespace STRING,
+  file_id STRING,
+  content STRING,
+  embedding ARRAY<FLOAT64>,
+  object_ref STRUCT<
+    uri STRING,
+    version STRING,
+    authorizer STRING,
+    details STRING
+  >,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+  docid STRING
+);
+
+Run it.  
+
+8. Navigate to BigQuery → Models → Create Model.
+    Model ID: gen_ai_model
+    Model Type: Generative AI → Text Generation
+    Base Model: gemini-pro (or available model in your region)
+    Dataset: digibot
+    Click Create.
+
+9. Update the following in your backend .env file:
+    GOOGLE_PROJECT_ID=your-gcp-project-id
+    BIGQUERY_DATASET=digibot
+    BIGQUERY_TABLE=embeddings
+    GCS_BUCKET_NAME=digibot_bq_demo
+    BIGQUERY_CONNECTION_ID=us-central1.myconnection
+    BIGQUERY_MAX_OUTPUT_TOKEN=1024
+    BIGQUERY_AI_MODEL_ID=gen_ai_model
+
+
+Dropbox setup:
+''''''''''''''
+1. Go to the Dropbox App Console and sign in to your Dropbox account.
+2. Click on Create App.
+3. Choose the type of access you want: Full Dropbox.
+4. Name your app and click Create App.
+5. Dropbox will provide you with an App key and an Access token copy them and update in backend .env file DROPBOX_APP_KEY and DROPBOX_ACCESS_TOKEN, which you'll use in your code for authentication.
+6. Add the redirect URI where Dropbox will redirect users after they authenticate with your app. Ensure the URI matches the one used in your OAuth flow (http://locahost:3011, http://localhost:5050/auth/providers/dropbox/callback).
+7. In Chooser / Saver / Embedder domains, provide "localhost" for local use.
+8. Dropbox scope:
+files.content.read: Read file content.
+
+Onedrive setup:
+'''''''''''''''
+1. Open the registered application in the Azure portal.
+2. Select Authentication -> Add a platform -> Single page application -> Enter the redirect URL (http://localhost:3011/upload-document) and click configure.
+3. For Implicit grant and hybrid flows: Select 
+Access tokens (used for implicit flows)
+ID tokens (used for implicit and hybrid flows)
+4. Select API permissions -> Add permission -> Microsoft APIs -> Microsoft Graph -> Delegated permissions -> Select Files.Read.
+5. Click on Grant admin concent for default Directory.
+
+Wordpress setup:
+''''''''''''''''
+1. Visit https://developer.wordpress.com/apps/ and sign in with your WordPress.com account.
+2. Click "Create New Application"
+3. Fill out your application details
+4. Set the Redirect URL (http://localhost:5050/auth/providers/wordpress/callback)
+5. Set the Javascript Origins (http://localhost:3011)
+6. Click "Create"
+7. WordPress will generate your Client ID and Client Secret — copy both and store them in your .env file as:
+WORDPRESS_CLIENT_ID and WORDPRESS_CLIENT_SECRET
+
+Slack setup:
+''''''''''''
+1. Visit https://api.slack.com/apps and sign in with your Slack account.
+2. Click on “Create New App”
+3. Fill details and click Create App.
+4. Configure OAuth & Permissions
+5. Under Redirect URLs, add your backend redirect URI (http://localhost:5050/auth/providers/slack/callback)
+6. Under Scopes, add required scopes depending on your use case. For file access
+files:read, users:read, channels:read
+7. Go to Basic Information and copy Client ID, Client Secret and Verification Token and store them in your .env file as: SLACK_CLIENT_ID, SLACK_CLIENT_SECRET and SLACK_VERIFICATION_TOKEN

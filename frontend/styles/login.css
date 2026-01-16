@@ -1,0 +1,303 @@
+.login-background-img {
+    background-image: url('../background-images/Login.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-color: #F5F6FA;
+}
+
+.login-background-img::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 22rem;
+    height: 22rem;
+    background: radial-gradient(circle at 0 100%, #b4d5f7 20%, transparent 50%, Transparent 100%);
+}
+
+.main-form {
+    position: relative;
+    width: 35rem;
+    margin: 0 auto;
+    aspect-ratio: 1/1;
+}
+
+.form-custom-input {
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+
+.input-icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+}
+
+.custom-btn {
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+
+.union-top,
+.union-bottom {
+    position: absolute;
+    width: 15%;
+    height: auto;
+}
+
+.union-top {
+    top: -2rem;
+    left: -2rem;
+}
+
+.union-bottom {
+    bottom: -2rem;
+    right: -2rem;
+}
+
+.login-msg-container {
+    color: red;
+    position: absolute;
+    top: 100%;
+    width: fit-content;
+}
+
+.login-logo-shift {
+    position: fixed;
+    top: 10px;
+    left: 30px;
+}
+
+@media screen and (min-width: 768px) {
+    .tab-d-flex {
+        display: flex;
+        align-items: center;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .margin-mobile .signup-margin {
+        padding-left: 2rem;
+    }
+    .margin-mobile {
+        padding-right: 3rem;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .form-custom-input {
+        margin-bottom: 2rem;
+    }
+
+    .fv-plugins-message-container {
+        position: absolute;
+        top: 100%;
+        width: fit-content;
+        box-sizing: border-box;
+    }
+
+    .google-btn {
+        width: 80% !important;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .login-background-img {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .login-background-img::before {
+        width: 15rem;
+        height: 15rem;
+    }
+
+    .mobile-d-flex {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .mob-center {
+        margin-top: 7vh;
+    }
+
+    .google-btn {
+        width: 100% !important;
+    }
+
+    .form-custom-input {
+        margin-bottom: 2rem;
+    }
+
+    .fv-plugins-message-container {
+        position: absolute;
+        top: 100%;
+        width: max-content;
+        box-sizing: border-box;
+    }
+}
+
+@media only screen and (max-width: 1000px) and (orientation: landscape) {
+    .login-background-img {
+        height: 140vh !important;
+    }
+
+    .login-background-img::before {
+        bottom: -40vh;
+        width: 14rem;
+        height: 14rem;
+    }
+}
+
+@media only screen and (width: 720px) and (orientation: landscape) {
+    .login-background-img {
+        height: 100vh !important;
+    }
+
+    .login-background-img::before {
+        bottom: -0vh;
+        width: 14rem;
+        height: 14rem;
+    }
+
+    .mob-center {
+        margin-top: 5vh;
+    }
+}
+
+@media only screen and (max-width: 680px) and (orientation: landscape) {
+    .login-background-img {
+        height: 180vh !important;
+    }
+
+    .login-background-img::before {
+        bottom: -80vh;
+        width: 14rem;
+        height: 14rem;
+    }
+
+    .mob-center {
+        margin-top: 5vh;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .login-background-img {
+        height: 115vh !important;
+    }
+
+    .login-background-img::before {
+        bottom: -15vh;
+        width: 10rem;
+        height: 10rem;
+    }
+}
+
+@media screen and (max-width: 290px) {
+    .login-background-img {
+        height: 110vh !important;
+        width: 110vw !important;
+    }
+
+    .login-background-img::before {
+        bottom: -10vh;
+        width: 10rem;
+        height: 10rem;
+    }
+}
+
+@media only screen and (width: 430px) and (height: 932px) {
+    .mob-center {
+        margin-top: 10vh;
+    }
+}
+
+@media only screen and (width: 540px) and (height: 720px) {
+    .login-background-img {
+        height: 100vh !important;
+    }
+
+    .login-background-img::before {
+        bottom: -00vh;
+        width: 10rem;
+        height: 10rem;
+    }
+
+    .mob-center {
+        margin-top: -5vh;
+    }
+}
+
+@media only screen and (width: 740px) and (height: 360px) {
+    .mob-center {
+        margin-top: 3vh;
+    }
+}
+
+@media only screen and (width: 375px) and (height: 667px) {
+    .login-background-img {
+        height: 100vh !important;
+    }
+
+    .login-background-img::before {
+        bottom: -00vh;
+        width: 10rem;
+        height: 10rem;
+    }
+
+    .mob-center {
+        margin-top: -2vh;
+    }
+}
+
+@media only screen and (width: 360px) and (height: 740px) {
+    .login-background-img {
+        height: 100vh !important;
+    }
+
+    .login-background-img::before {
+        bottom: -00vh;
+        width: 10rem;
+        height: 10rem;
+    }
+
+    .mob-center {
+        margin-top: 3vh;
+    }
+}
+
+@media only screen and (width: 280px) and (height: 653px) {
+    .login-background-img {
+        height: 110.35vh !important;
+    }
+
+    .login-background-img::before {
+        bottom: -10.35vh;
+        width: 10rem;
+        height: 10rem;
+    }
+}
+
+@media only screen and (width: 667px) and (height: 375px) {
+    .login-background-img {
+        height: 140vh !important;
+    }
+
+    .login-background-img::before {
+        bottom: -40vh;
+        width: 10rem;
+        height: 10rem;
+    }
+
+    .mob-center {
+        margin-top: 8vh;
+    }
+}

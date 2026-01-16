@@ -1,0 +1,91 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build outputs
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Testing
+coverage/
+.nyc_output/
+test-results/
+playwright-report/
+playwright/.cache/
+e2e/playwright-report/
+e2e/test-results/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Uploads (user-generated content)
+uploads/userAvatars/*
+uploads/companyLogos/*
+uploads/appIcon/*
+uploads/appLogo/*
+!uploads/**/.gitkeep
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+.temp/
+
+# OS
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Optional caches
+.npm
+.eslintcache
+.node_repl_history
+
+# Build artifacts
+*.tgz
+.yarn-integrity
+.parcel-cache
+
+# Framework specific
+.next/
+next-env.d.ts
+.nuxt/
+.output/
+.vuepress/dist
+.serverless/
+.fusebox/
+.dynamodb/
+.tern-port
+.vscode-test
+
+# Misc
+*.seed
+*.pid
+*.pid.lock
