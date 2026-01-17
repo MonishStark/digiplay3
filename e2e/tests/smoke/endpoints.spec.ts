@@ -7,10 +7,12 @@ test.describe('Comprehensive Endpoint Coverage', () => {
   // ==================== UNAUTHENTICATED ENDPOINTS ====================
 
   test('GET /app-data - Get app configuration', async ({ request }) => {
-    const response = await request.get(`${API_URL}/app-data`);
+    const response = await request.get(`${API_URL}/app-data`, {
+      failOnStatusCode: false
+    });
     expect(response.status()).toBe(200);
     const data = await response.json();
-    expect(data).toHaveProperty('data');
+    expect(data).toHaveProperty('appData');
   });
 
   test('POST /auth/email/check - Check email existence', async ({ request }) => {
