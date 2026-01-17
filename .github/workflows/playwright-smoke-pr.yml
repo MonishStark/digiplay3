@@ -358,8 +358,6 @@ jobs:
             PR: #${{ github.event.pull_request.number }}
 
             SUMMARY:
-            ✅ Passed: 0
-            ❌ Failed: 0
             ⚠️ Tests NOT executed due to High/Critical security issues
 
             🔐 Gemini Gate Status: ✗ BLOCKED
