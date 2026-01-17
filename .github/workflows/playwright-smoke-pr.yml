@@ -530,26 +530,30 @@ jobs:
             echo "=== Stats object ==="
             jq '.stats' test-results.json
             
-            # Extract from stats object (expected + flaky = passed, unexpected = failed)
+            # Extract from stats object
             PASSED=$(jq '.stats.expected + (.stats.flaky // 0)' test-results.json 2>/dev/null)
             FAILED=$(jq '.stats.unexpected // 0' test-results.json 2>/dev/null)
-            TOTAL=$(jq '.stats.expected + (.stats.flaky // 0) + (.stats.unexpected // 0)' test-results.json 2>/dev/null)
+            SKIPPED=$(jq '.stats.skipped // 0' test-results.json 2>/dev/null)
+            TOTAL=$(jq '.stats.expected + (.stats.flaky // 0) + (.stats.unexpected // 0) + (.stats.skipped // 0)' test-results.json 2>/dev/null)
             
             # Set defaults if null
             PASSED=${PASSED:-0}
             FAILED=${FAILED:-0}
+            SKIPPED=${SKIPPED:-0}
             TOTAL=${TOTAL:-0}
             
-            echo "Parsed: PASSED=$PASSED, FAILED=$FAILED, TOTAL=$TOTAL"
+            echo "Parsed: PASSED=$PASSED, FAILED=$FAILED, SKIPPED=$SKIPPED, TOTAL=$TOTAL"
           else
             echo "test-results.json file not found!"
             PASSED=0
             FAILED=0
+            SKIPPED=0
             TOTAL=0
           fi
           
           echo "PASSED=$PASSED" >> $GITHUB_ENV
           echo "FAILED=$FAILED" >> $GITHUB_ENV
+          echo "SKIPPED=$SKIPPED" >> $GITHUB_ENV
           echo "TOTAL=$TOTAL" >> $GITHUB_ENV
 
       - name: Zip Playwright report
@@ -596,6 +600,10 @@ jobs:
           
           {
             echo "REPORT_SECTION<<EOF"
+            
+            echo "✅ Summary:"
+            echo "Passed: ${{ env.PASSED }}  |  Failed: ${{ env.FAILED }}  |  Skipped: ${{ env.SKIPPED }}  |  Total: ${{ env.TOTAL }}"
+            echo ""
             
             if [ -f "test-results.json" ] && [ -d "playwright-report" ] && [ -f "playwright-report/index.html" ]; then
               if [ -n "${{ env.REPORT_LINK }}" ]; then
