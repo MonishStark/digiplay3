@@ -529,21 +529,30 @@ jobs:
           ls -la test-results.json || echo "test-results.json not found"
           
           if [ -f "test-results.json" ]; then
-            echo "=== test-results.json content (first 500 chars) ==="
-            head -c 500 test-results.json
-            echo ""
-            echo "=== Parsing results ==="
+            echo "=== JSON structure keys ==="
+            jq 'keys' test-results.json
             
-            # Try to get test stats from the JSON
-            PASSED=$(jq -r '.suites[].specs[] | select(.ok == true)' test-results.json 2>/dev/null | wc -l | tr -d ' ')
-            FAILED=$(jq -r '.suites[].specs[] | select(.ok == false)' test-results.json 2>/dev/null | wc -l | tr -d ' ')
+            echo "=== Checking suites structure ==="
+            jq '.suites | length' test-results.json
+            jq '.suites[0] | keys' test-results.json 2>/dev/null || echo "No suites[0]"
             
-            # Fallback: try counting from tests array
-            if [ "$PASSED" = "0" ] && [ "$FAILED" = "0" ]; then
-              PASSED=$(jq -r '.suites[].specs[].tests[] | select(.status == "expected" or .status == "flaky")' test-results.json 2>/dev/null | wc -l | tr -d ' ')
-              FAILED=$(jq -r '.suites[].specs[].tests[] | select(.status == "unexpected")' test-results.json 2>/dev/null | wc -l | tr -d ' ')
+            echo "=== Trying to extract test counts ==="
+            # Playwright JSON format has: suites -> specs -> tests -> results
+            PASSED=$(jq '[.suites[].specs[].tests[].results[] | select(.status == "passed")] | length' test-results.json 2>/dev/null)
+            FAILED=$(jq '[.suites[].specs[].tests[].results[] | select(.status == "failed")] | length' test-results.json 2>/dev/null)
+            
+            # If that doesn't work, try at the spec level
+            if [ -z "$PASSED" ] || [ "$PASSED" = "null" ]; then
+              PASSED=$(jq '[.suites[].specs[] | select(.ok == true)] | length' test-results.json 2>/dev/null)
             fi
             
+            if [ -z "$FAILED" ] || [ "$FAILED" = "null" ]; then
+              FAILED=$(jq '[.suites[].specs[] | select(.ok == false)] | length' test-results.json 2>/dev/null)
+            fi
+            
+            # Set defaults if still empty
+            PASSED=${PASSED:-0}
+            FAILED=${FAILED:-0}
             TOTAL=$((PASSED + FAILED))
             
             echo "Parsed: PASSED=$PASSED, FAILED=$FAILED, TOTAL=$TOTAL"
