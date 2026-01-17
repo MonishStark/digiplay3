@@ -525,11 +525,30 @@ jobs:
         working-directory: e2e
         shell: bash
         run: |
+          echo "=== Checking for test results ==="
+          ls -la test-results.json || echo "test-results.json not found"
+          
           if [ -f "test-results.json" ]; then
-            PASSED=$(jq '[.suites[].specs[] | select(.ok == true)] | length' test-results.json 2>/dev/null || echo "0")
-            FAILED=$(jq '[.suites[].specs[] | select(.ok == false)] | length' test-results.json 2>/dev/null || echo "0")
+            echo "=== test-results.json content (first 500 chars) ==="
+            head -c 500 test-results.json
+            echo ""
+            echo "=== Parsing results ==="
+            
+            # Try to get test stats from the JSON
+            PASSED=$(jq -r '.suites[].specs[] | select(.ok == true)' test-results.json 2>/dev/null | wc -l | tr -d ' ')
+            FAILED=$(jq -r '.suites[].specs[] | select(.ok == false)' test-results.json 2>/dev/null | wc -l | tr -d ' ')
+            
+            # Fallback: try counting from tests array
+            if [ "$PASSED" = "0" ] && [ "$FAILED" = "0" ]; then
+              PASSED=$(jq -r '.suites[].specs[].tests[] | select(.status == "expected" or .status == "flaky")' test-results.json 2>/dev/null | wc -l | tr -d ' ')
+              FAILED=$(jq -r '.suites[].specs[].tests[] | select(.status == "unexpected")' test-results.json 2>/dev/null | wc -l | tr -d ' ')
+            fi
+            
             TOTAL=$((PASSED + FAILED))
+            
+            echo "Parsed: PASSED=$PASSED, FAILED=$FAILED, TOTAL=$TOTAL"
           else
+            echo "test-results.json file not found!"
             PASSED=0
             FAILED=0
             TOTAL=0
