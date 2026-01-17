@@ -565,8 +565,13 @@ jobs:
             echo "REPORT_SECTION<<EOF"
             
             if [ -f "test-results.json" ] && [ -d "playwright-report" ] && [ -f "playwright-report/index.html" ]; then
-              echo "📂 PLAYWRIGHT REPORT:"
-              echo "Report attached as ZIP file"
+              if [ -n "${{ env.REPORT_LINK }}" ]; then
+                echo "📂 PLAYWRIGHT REPORT:"
+                echo "📥 Download from Google Drive: ${{ env.REPORT_LINK }}"
+              else
+                echo "📂 PLAYWRIGHT REPORT:"
+                echo "Report generated (Check GitHub Actions artifacts)"
+              fi
               echo ""
               echo "🔗 View Full Report: $RUN_URL"
               
@@ -616,6 +621,29 @@ jobs:
             echo "REPORT_ZIP=" >> "$GITHUB_ENV"
           fi
 
+      - name: Upload Report to Google Drive
+        if: always() && steps.gemini_gate.outputs.block != 'true' && env.REPORT_ZIP != ''
+        continue-on-error: true
+        env:
+          GDRIVE_CLIENT_ID: ${{ secrets.GDRIVE_CLIENT_ID }}
+          GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
+          GDRIVE_REFRESH_TOKEN: ${{ secrets.GDRIVE_REFRESH_TOKEN }}
+          REPORT_ZIP: ${{ env.REPORT_ZIP }}
+          REPORT_NAME_PREFIX: digiplay-report
+        run: |
+          OUTPUT=$(node scripts/uploadToDrive.js 2>&1)
+          echo "$OUTPUT"
+          
+          # Extract REPORT_LINK from output
+          REPORT_LINK=$(echo "$OUTPUT" | grep '^REPORT_LINK=' | cut -d '=' -f 2)
+          if [ -n "$REPORT_LINK" ]; then
+            echo "REPORT_LINK=$REPORT_LINK" >> "$GITHUB_ENV"
+            echo "✅ Report uploaded to Drive: $REPORT_LINK"
+          else
+            echo "⚠️ Could not extract report link"
+            echo "REPORT_LINK=" >> "$GITHUB_ENV"
+          fi
+
       - name: Send Email Notification
         if: always() && steps.gemini_gate.outputs.block != 'true'
         continue-on-error: true
@@ -638,7 +666,6 @@ jobs:
             ❌ Failed: ${{ env.FAILED }}
 
             ${{ env.REPORT_SECTION }}
-          attachments: ${{ env.REPORT_ZIP }}
 
       - name: Upload Playwright report
         if: always()
