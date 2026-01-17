@@ -99,6 +99,12 @@ jobs:
       REPORT_FROM_PASSWORD: ${{ secrets.REPORT_FROM_PASSWORD }}
       REPORT_TO_MAILS: ${{ secrets.REPORT_TO_MAILS }}
 
+      # Test result tracking
+      PASSED: "0"
+      FAILED: "0"
+      TOTAL: "0"
+      REPORT_SECTION: ""
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -340,6 +346,29 @@ jobs:
             const joined = allBodies.join('\n\n---\n\n');
             core.setOutput('details', joined.length > MAX_DETAILS ? `${joined.slice(0, MAX_DETAILS)}\n\n...[truncated]` : joined);
 
+      - name: Prepare Blocked Email Report
+        if: steps.gemini_gate.outputs.block == 'true'
+        shell: bash
+        run: |
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          
+          {
+            echo "REPORT_SECTION<<EOF"
+            echo "🔐 Gemini Gate Status: ✗ BLOCKED"
+            echo ""
+            echo "Critical Issues Detected:"
+            echo "${{ steps.gemini_gate.outputs.summary }}"
+            echo ""
+            echo "📋 Details:"
+            echo "${{ steps.gemini_gate.outputs.details }}"
+            echo ""
+            echo "🔗 View Full Report: $RUN_URL"
+            echo ""
+            echo "⚠️ Action Required:"
+            echo "Please fix the High/Critical security issues before Playwright tests can run."
+            echo "EOF"
+          } >> "$GITHUB_ENV"
+
       - name: Notify - Playwright skipped (Gemini High/Critical)
         if: steps.gemini_gate.outputs.block == 'true'
         continue-on-error: true
@@ -360,24 +389,30 @@ jobs:
             SUMMARY:
             ⚠️ Tests NOT executed due to High/Critical security issues
 
-            🔐 Gemini Gate Status: ✗ BLOCKED
-            
-            Critical Issues Detected:
-            ${{ steps.gemini_gate.outputs.summary }}
-
-            📋 Details:
-            ${{ steps.gemini_gate.outputs.details }}
-
-            🔗 View Full Report: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-
-            ⚠️ Action Required:
-            Please fix the High/Critical security issues before Playwright tests can run.
+            ${{ env.REPORT_SECTION }}
 
       - name: Stop workflow due to High/Critical issues
         if: steps.gemini_gate.outputs.block == 'true'
         run: |
           echo "Blocking issues reported by Gemini bot; skipping Playwright." >&2
           exit 1
+
+      - name: Prepare Starting Email Report
+        if: steps.gemini_gate.outputs.block != 'true'
+        shell: bash
+        run: |
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          
+          {
+            echo "REPORT_SECTION<<EOF"
+            echo "🔐 Gemini Gate Status: ✓ Passed"
+            echo "No High/Critical security issues detected."
+            echo ""
+            echo "⚙️ Playwright smoke tests are now running..."
+            echo ""
+            echo "🔗 View Live Progress: $RUN_URL"
+            echo "EOF"
+          } >> "$GITHUB_ENV"
 
       - name: Notify - No High/Critical issues (Playwright starting)
         if: steps.gemini_gate.outputs.block != 'true'
@@ -396,12 +431,7 @@ jobs:
             Execution Status: In Progress
             PR: #${{ github.event.pull_request.number }}
 
-            🔐 Gemini Gate Status: ✓ Passed
-            No High/Critical security issues detected.
-
-            ⚙️ Playwright smoke tests are now running...
-
-            🔗 View Live Progress: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            ${{ env.REPORT_SECTION }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -496,33 +526,71 @@ jobs:
         if: always() && steps.gemini_gate.outputs.block != 'true'
         id: parse_results
         working-directory: e2e
+        shell: bash
         run: |
           if [ -f "test-results.json" ]; then
             PASSED=$(jq '[.suites[].specs[] | select(.ok == true)] | length' test-results.json 2>/dev/null || echo "0")
             FAILED=$(jq '[.suites[].specs[] | select(.ok == false)] | length' test-results.json 2>/dev/null || echo "0")
             TOTAL=$((PASSED + FAILED))
-            
-            # Generate report section
-            REPORT_SECTION="🔗 View Full Report: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-            
-            # Add failed test details if any
-            if [ "$FAILED" -gt 0 ]; then
-              FAILED_TESTS=$(jq -r '[.suites[].specs[] | select(.ok == false) | "❌ " + .title] | join("\n")' test-results.json 2>/dev/null || echo "")
-              REPORT_SECTION="${REPORT_SECTION}\n\n⚠️ Failed Tests:\n${FAILED_TESTS}"
-            fi
           else
             PASSED=0
             FAILED=0
             TOTAL=0
-            REPORT_SECTION="⚠️ Test results file not found"
           fi
           
           echo "PASSED=$PASSED" >> $GITHUB_ENV
           echo "FAILED=$FAILED" >> $GITHUB_ENV
           echo "TOTAL=$TOTAL" >> $GITHUB_ENV
-          echo "REPORT_SECTION<<EOF" >> $GITHUB_ENV
-          echo -e "$REPORT_SECTION" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+
+      - name: Prepare Completion Email Report
+        if: always() && steps.gemini_gate.outputs.block != 'true'
+        shell: bash
+        working-directory: e2e
+        run: |
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          
+          {
+            echo "REPORT_SECTION<<EOF"
+            
+            if [ -f "test-results.json" ] && [ -d "playwright-report" ] && [ -f "playwright-report/index.html" ]; then
+              echo "📂 PLAYWRIGHT REPORT:"
+              echo "Report attached as ZIP file"
+              echo ""
+              echo "🔗 View Full Report: $RUN_URL"
+              
+              if [ "${{ env.FAILED }}" -gt 0 ]; then
+                FAILED_TESTS=$(jq -r '[.suites[].specs[] | select(.ok == false) | "  ❌ " + .title] | join("\n")' test-results.json 2>/dev/null || echo "")
+                if [ -n "$FAILED_TESTS" ]; then
+                  echo ""
+                  echo "⚠️ Failed Tests:"
+                  echo "$FAILED_TESTS"
+                fi
+              fi
+            else
+              echo "⚠️ ISSUE SUMMARY:"
+              
+              if [ ! -f "test-results.json" ]; then
+                echo "- Test results file not found (test-results.json missing)"
+              fi
+              
+              if [ ! -d "playwright-report" ] || [ ! -f "playwright-report/index.html" ]; then
+                echo "- Report not generated (playwright-report missing)"
+              fi
+              
+              echo ""
+              echo "Run logs: $RUN_URL"
+            fi
+            
+            echo ""
+            echo "📋 Note:"
+            echo "1. Gemini Code Review passed - No High/Critical security issues detected."
+            echo "2. The test suite was executed sequentially to improve stability."
+            echo "3. UI animations were disabled during execution to ensure consistent and reliable visual comparisons."
+            echo ""
+            echo "🔐 Gemini Gate Status: ✓ Passed (Low/Medium issues only)"
+            
+            echo "EOF"
+          } >> "$GITHUB_ENV"
 
       - name: Zip Playwright report
         if: always() && steps.gemini_gate.outputs.block != 'true'
@@ -558,13 +626,6 @@ jobs:
             ❌ Failed: ${{ env.FAILED }}
 
             ${{ env.REPORT_SECTION }}
-
-            📋 Note:
-            1. Gemini Code Review passed - No High/Critical security issues detected.
-            2. The test suite was executed sequentially to improve stability.
-            3. UI animations were disabled during execution to ensure consistent and reliable visual comparisons.
-
-            🔐 Gemini Gate Status: ✓ Passed (Low/Medium issues only)
           attachments: ${{ env.REPORT_ZIP }}
 
       - name: Upload Playwright report
