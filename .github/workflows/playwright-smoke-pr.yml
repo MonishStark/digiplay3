@@ -359,8 +359,6 @@ jobs:
             echo "Critical Issues Detected:"
             echo "${{ steps.gemini_gate.outputs.summary }}"
             echo ""
-            echo "🔗 View Full Report: $RUN_URL"
-            echo ""
             echo "⚠️ Action Required:"
             echo "Please fix the High/Critical security issues before Playwright tests can run."
             echo "EOF"
@@ -601,15 +599,13 @@ jobs:
             
             if [ -f "test-results.json" ] && [ -d "playwright-report" ] && [ -f "playwright-report/index.html" ]; then
               if [ -n "${{ env.REPORT_LINK }}" ]; then
-                echo "📂 PLAYWRIGHT REPORT:"
-                echo "📥 Download from Google Drive: ${{ env.REPORT_LINK }}"
+                echo "📂 Download full REPORT:"
+                echo "${{ env.REPORT_LINK }}"
               else
                 echo "📂 PLAYWRIGHT REPORT:"
                 echo "Report generated (Check GitHub Actions artifacts)"
               fi
-              echo ""
-              echo "🔗 View Full Report: $RUN_URL"
-              
+              echo ""              
               if [ "${{ env.FAILED }}" -gt 0 ]; then
                 FAILED_TESTS=$(jq -r '[.suites[].specs[] | select(.ok == false) | "  ❌ " + .title] | join("\n")' test-results.json 2>/dev/null || echo "")
                 if [ -n "$FAILED_TESTS" ]; then
@@ -635,9 +631,8 @@ jobs:
             
             echo ""
             echo "📋 Note:"
-            echo "1. Gemini Code Review passed - No High/Critical security issues detected."
-            echo "2. The test suite was executed sequentially to improve stability."
-            echo "3. UI animations were disabled during execution to ensure consistent and reliable visual comparisons."
+            echo "1. The test suite was executed sequentially to improve stability."
+            echo "2. UI animations were disabled during execution to ensure consistent and reliable visual comparisons."
             echo ""
             echo "🔐 Gemini Gate Status: ✓ Passed (Low/Medium issues only)"
             
