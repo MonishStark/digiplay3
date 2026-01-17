@@ -16,7 +16,7 @@ test.describe("Navigation Smoke Tests", () => {
 	// Note: Adjust URL patterns based on actual app routing
 
 	test("should load app data without console errors", async ({ page }) => {
-		test.setTimeout(120000);
+		test.setTimeout(30000);
 		try {
 			const consoleErrors: string[] = [];
 			page.on("console", (msg) => {
@@ -28,8 +28,8 @@ test.describe("Navigation Smoke Tests", () => {
 			try {
 				const appDataResponse = page.waitForResponse((resp) => {
 					return resp.url().includes("/app-data") && resp.status() === 200;
-				}, { timeout: 15000 }); 
-				await page.goto("/dashboard");
+				}, { timeout: 5000 }); 
+				await page.goto("/dashboard", { timeout: 5000 });
 				await appDataResponse;
 			} catch (navError) {
 				console.log("Navigation/AppData wait failed, suppressing:", navError);
@@ -45,79 +45,79 @@ test.describe("Navigation Smoke Tests", () => {
 	});
 
 	test("should navigate to Dashboard", async ({ page }) => {
-		test.setTimeout(120000);
+		test.setTimeout(30000);
 		try {
-			await page.goto("/dashboard");
-			await expect(page).toHaveURL(/.*dashboard/);
+			await page.goto("/dashboard", { timeout: 5000 });
+			await expect(page).toHaveURL(/.*dashboard/, { timeout: 3000 });
 		} catch (e) { console.log("Suppressed error in dashboard nav test"); }
 	});
 
 	test("should navigate to Teams", async ({ page }) => {
-		test.setTimeout(120000);
+		test.setTimeout(30000);
 		try {
-			await page.goto("/teams");
-			await expect(page).toHaveURL(/.*teams/);
+			await page.goto("/teams", { timeout: 5000 });
+			await expect(page).toHaveURL(/.*teams/, { timeout: 3000 });
 		} catch (e) { console.log("Suppressed error in teams nav test"); }
 	});
 
 	test("should navigate to Files", async ({ page }) => {
-		test.setTimeout(120000);
+		test.setTimeout(30000);
 		try {
 			const hasTeam = await ensureTeamSelected(page);
 			if (!hasTeam) {
 				console.log("No team access to run files navigation test.");
 				return;
 			}
-			await page.goto("/files");
-			await expect(page).toHaveURL(/.*files/);
+			await page.goto("/files", { timeout: 5000 });
+			await expect(page).toHaveURL(/.*files/, { timeout: 3000 });
 		} catch (e) { console.log("Suppressed error in files nav test"); }
 	});
 
 	test("should navigate to Notifications", async ({ page }) => {
-		test.setTimeout(120000);
+		test.setTimeout(30000);
 		try {
-			await page.goto("/notifications");
-			await expect(page).toHaveURL(/.*notifications/);
+			await page.goto("/notifications", { timeout: 5000 });
+			await expect(page).toHaveURL(/.*notifications/, { timeout: 3000 });
 		} catch (e) { console.log("Suppressed error in notifications nav test"); }
 	});
 
 	test("should navigate to User Account", async ({ page }) => {
-		test.setTimeout(120000);
+		test.setTimeout(30000);
 		try {
-			await page.goto("/user");
-			await expect(page).toHaveURL(/.*user/);
+			await page.goto("/user", { timeout: 5000 });
+			await expect(page).toHaveURL(/.*user/, { timeout: 3000 });
 		} catch (e) { console.log("Suppressed error in user nav test"); }
 	});
 
 	test("should navigate to Company Profile", async ({ page }) => {
-		test.setTimeout(120000);
+		test.setTimeout(30000);
 		try {
-			await page.goto("/company");
-			await expect(page).toHaveURL(/.*company/);
+			await page.goto("/company", { timeout: 5000 });
+			await expect(page).toHaveURL(/.*company/, { timeout: 3000 });
 		} catch (e) { console.log("Suppressed error in company nav test"); }
 	});
 
 	test("should navigate to Manage Users", async ({ page }) => {
-		test.setTimeout(120000);
+		test.setTimeout(30000);
 		try {
-			await page.goto("/manage-users");
+			await page.goto("/manage-users", { timeout: 5000 });
 			if (page.url().includes("/error/500")) {
 				console.log("Manage Users requires admin role. Treating as passed.");
 				return;
 			}
-			await expect(page).toHaveURL(/.*manage-users/);
+			await expect(page).toHaveURL(/.*manage-users/, { timeout: 3000 });
 		} catch (e) { console.log("Suppressed error in manage users nav test"); }
 	});
 
 	test("should navigate to Invite Users", async ({ page }) => {
-		test.setTimeout(120000);
+		test.setTimeout(30000);
 		try {
-			await page.goto("/invite-users");
+			await page.goto("/invite-users", { timeout: 5000 });
 			if (page.url().includes("/error/500")) {
 				console.log("Invite Users requires admin role. Treating as passed.");
 				return;
 			}
-			await expect(page).toHaveURL(/.*invite-users/);
+			await expect(page).toHaveURL(/.*invite-users/, { timeout: 3000 });
 		} catch (e) { console.log("Suppressed error in invite users nav test"); }
 	});
 });
