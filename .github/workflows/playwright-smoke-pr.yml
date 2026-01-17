@@ -517,7 +517,7 @@ jobs:
         id: playwright
         working-directory: e2e
         continue-on-error: true
-        run: npx playwright test --reporter=json > test-results.json || true
+        run: npx playwright test || true
 
       - name: Parse test results
         if: always() && steps.gemini_gate.outputs.block != 'true'
