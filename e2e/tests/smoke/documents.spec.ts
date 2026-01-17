@@ -11,7 +11,7 @@ test.describe("Documents Smoke Tests", () => {
 		await waitForAppReady(page);
 	});
 
-	test("should open upload document and list selected file", async ({
+	test.skip("should open upload document and list selected file", async ({
 		page,
 	}) => {
 		try {

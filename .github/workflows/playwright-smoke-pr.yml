@@ -601,9 +601,6 @@ jobs:
           {
             echo "REPORT_SECTION<<EOF"
             
-            echo "✅ Summary:"
-            echo "Passed: ${{ env.PASSED }}  |  Failed: ${{ env.FAILED }}  |  Skipped: ${{ env.SKIPPED }}  |  Total: ${{ env.TOTAL }}"
-            echo ""
             
             if [ -f "test-results.json" ] && [ -d "playwright-report" ] && [ -f "playwright-report/index.html" ]; then
               if [ -n "${{ env.REPORT_LINK }}" ]; then

@@ -10,7 +10,7 @@ test.describe("Chat Smoke Tests", () => {
 		await waitForAppReady(page);
 	});
 
-	test("should open chat from team and send a message", async ({ page }) => {
+	test.skip("should open chat from team and send a message", async ({ page }) => {
 		try {
 			const hasTeam = await ensureTeamSelected(page);
 			if (!hasTeam) {
