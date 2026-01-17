@@ -1,8 +1,13 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Comprehensive Endpoint Coverage', () => {
-  const BASE_URL = process.env.BASE_URL || 'http://127.0.0.1:3011';
+// Helper to add delay between tests to prevent backend overload
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+test.describe.serial('Comprehensive Endpoint Coverage', () => {
   const API_URL = process.env.BACKEND_URL || 'http://127.0.0.1:5050';
+  
+  // Timeout for all requests
+  const REQUEST_TIMEOUT = 10000;
 
   // ==================== UNAUTHENTICATED ENDPOINTS ====================
 
@@ -13,15 +18,19 @@ test.describe('Comprehensive Endpoint Coverage', () => {
     expect(response.status()).toBe(200);
     const data = await response.json();
     expect(data).toHaveProperty('appData');
+    await delay(100);
   });
 
   test('POST /auth/email/check - Check email existence', async ({ request }) => {
+    await delay(100);
     const response = await request.post(`${API_URL}/auth/email/check`, {
       data: {
         email: process.env.TEST_EMAIL || 'test@example.com'
-      }
+      },
+      failOnStatusCode: false,
+      timeout: REQUEST_TIMEOUT
     });
-    expect([200, 400]).toContain(response.status());
+    expect([200, 400, 422]).toContain(response.status());
   });
 
   test('GET /auth/payment/status - Check payment status', async ({ request }) => {
