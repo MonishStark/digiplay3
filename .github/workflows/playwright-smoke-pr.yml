@@ -529,31 +529,18 @@ jobs:
           ls -la test-results.json || echo "test-results.json not found"
           
           if [ -f "test-results.json" ]; then
-            echo "=== JSON structure keys ==="
-            jq 'keys' test-results.json
+            echo "=== Stats object ==="
+            jq '.stats' test-results.json
             
-            echo "=== Checking suites structure ==="
-            jq '.suites | length' test-results.json
-            jq '.suites[0] | keys' test-results.json 2>/dev/null || echo "No suites[0]"
+            # Extract from stats object (expected + flaky = passed, unexpected = failed)
+            PASSED=$(jq '.stats.expected + (.stats.flaky // 0)' test-results.json 2>/dev/null)
+            FAILED=$(jq '.stats.unexpected // 0' test-results.json 2>/dev/null)
+            TOTAL=$(jq '.stats.expected + (.stats.flaky // 0) + (.stats.unexpected // 0)' test-results.json 2>/dev/null)
             
-            echo "=== Trying to extract test counts ==="
-            # Playwright JSON format has: suites -> specs -> tests -> results
-            PASSED=$(jq '[.suites[].specs[].tests[].results[] | select(.status == "passed")] | length' test-results.json 2>/dev/null)
-            FAILED=$(jq '[.suites[].specs[].tests[].results[] | select(.status == "failed")] | length' test-results.json 2>/dev/null)
-            
-            # If that doesn't work, try at the spec level
-            if [ -z "$PASSED" ] || [ "$PASSED" = "null" ]; then
-              PASSED=$(jq '[.suites[].specs[] | select(.ok == true)] | length' test-results.json 2>/dev/null)
-            fi
-            
-            if [ -z "$FAILED" ] || [ "$FAILED" = "null" ]; then
-              FAILED=$(jq '[.suites[].specs[] | select(.ok == false)] | length' test-results.json 2>/dev/null)
-            fi
-            
-            # Set defaults if still empty
+            # Set defaults if null
             PASSED=${PASSED:-0}
             FAILED=${FAILED:-0}
-            TOTAL=$((PASSED + FAILED))
+            TOTAL=${TOTAL:-0}
             
             echo "Parsed: PASSED=$PASSED, FAILED=$FAILED, TOTAL=$TOTAL"
           else
