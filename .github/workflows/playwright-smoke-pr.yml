@@ -554,6 +554,41 @@ jobs:
           echo "FAILED=$FAILED" >> $GITHUB_ENV
           echo "TOTAL=$TOTAL" >> $GITHUB_ENV
 
+      - name: Zip Playwright report
+        if: always() && steps.gemini_gate.outputs.block != 'true'
+        run: |
+          if [ -d "e2e/playwright-report" ] && [ -f "e2e/playwright-report/index.html" ]; then
+            sudo apt-get update >/dev/null
+            sudo apt-get install -y zip >/dev/null
+            (cd e2e && zip -r playwright-report.zip playwright-report >/dev/null)
+            echo "REPORT_ZIP=e2e/playwright-report.zip" >> "$GITHUB_ENV"
+          else
+            echo "REPORT_ZIP=" >> "$GITHUB_ENV"
+          fi
+
+      - name: Upload Report to Google Drive
+        if: always() && steps.gemini_gate.outputs.block != 'true' && env.REPORT_ZIP != ''
+        continue-on-error: true
+        env:
+          GDRIVE_CLIENT_ID: ${{ secrets.GDRIVE_CLIENT_ID }}
+          GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
+          GDRIVE_REFRESH_TOKEN: ${{ secrets.GDRIVE_REFRESH_TOKEN }}
+          REPORT_ZIP: ${{ env.REPORT_ZIP }}
+          REPORT_NAME_PREFIX: digiplay-report
+        run: |
+          OUTPUT=$(node scripts/uploadToDrive.js 2>&1)
+          echo "$OUTPUT"
+          
+          # Extract REPORT_LINK from output
+          REPORT_LINK=$(echo "$OUTPUT" | grep '^REPORT_LINK=' | cut -d '=' -f 2)
+          if [ -n "$REPORT_LINK" ]; then
+            echo "REPORT_LINK=$REPORT_LINK" >> "$GITHUB_ENV"
+            echo "✅ Report uploaded to Drive: $REPORT_LINK"
+          else
+            echo "⚠️ Could not extract report link"
+            echo "REPORT_LINK=" >> "$GITHUB_ENV"
+          fi
+
       - name: Prepare Completion Email Report
         if: always() && steps.gemini_gate.outputs.block != 'true'
         shell: bash
@@ -608,41 +643,6 @@ jobs:
             
             echo "EOF"
           } >> "$GITHUB_ENV"
-
-      - name: Zip Playwright report
-        if: always() && steps.gemini_gate.outputs.block != 'true'
-        run: |
-          if [ -d "e2e/playwright-report" ] && [ -f "e2e/playwright-report/index.html" ]; then
-            sudo apt-get update >/dev/null
-            sudo apt-get install -y zip >/dev/null
-            (cd e2e && zip -r playwright-report.zip playwright-report >/dev/null)
-            echo "REPORT_ZIP=e2e/playwright-report.zip" >> "$GITHUB_ENV"
-          else
-            echo "REPORT_ZIP=" >> "$GITHUB_ENV"
-          fi
-
-      - name: Upload Report to Google Drive
-        if: always() && steps.gemini_gate.outputs.block != 'true' && env.REPORT_ZIP != ''
-        continue-on-error: true
-        env:
-          GDRIVE_CLIENT_ID: ${{ secrets.GDRIVE_CLIENT_ID }}
-          GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
-          GDRIVE_REFRESH_TOKEN: ${{ secrets.GDRIVE_REFRESH_TOKEN }}
-          REPORT_ZIP: ${{ env.REPORT_ZIP }}
-          REPORT_NAME_PREFIX: digiplay-report
-        run: |
-          OUTPUT=$(node scripts/uploadToDrive.js 2>&1)
-          echo "$OUTPUT"
-          
-          # Extract REPORT_LINK from output
-          REPORT_LINK=$(echo "$OUTPUT" | grep '^REPORT_LINK=' | cut -d '=' -f 2)
-          if [ -n "$REPORT_LINK" ]; then
-            echo "REPORT_LINK=$REPORT_LINK" >> "$GITHUB_ENV"
-            echo "✅ Report uploaded to Drive: $REPORT_LINK"
-          else
-            echo "⚠️ Could not extract report link"
-            echo "REPORT_LINK=" >> "$GITHUB_ENV"
-          fi
 
       - name: Send Email Notification
         if: always() && steps.gemini_gate.outputs.block != 'true'
