@@ -1,9 +1,6 @@
 /** @format */
 
 import { test, expect } from "@playwright/test";
-
-// Skip flaky UI invitation tests on CI to avoid environment-related timeouts
-test.skip(!!process.env.CI, "Skipping UI invitation tests on CI environment");
 import { login } from "../utils/auth";
 import { waitForAppReady } from "../utils/app";
 
