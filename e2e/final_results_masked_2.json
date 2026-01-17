@@ -1,0 +1,1853 @@
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+Terminate batch job (Y/N)? {
+  "config": {
+    "configFile": "C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\playwright.config.ts",
+    "rootDir": "C:/Users/Dhanush/Desktop/digiplay/digiplay3/e2e/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 4
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "C:/Users/Dhanush/Desktop/digiplay/digiplay3/e2e/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/Dhanush/Desktop/digiplay/digiplay3/e2e/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.57.0",
+    "workers": 4,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "smoke\\auth.spec.ts",
+      "file": "smoke/auth.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Authentication Smoke Tests",
+          "file": "smoke/auth.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should allow a user to login with valid credentials",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 12495,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: \u001b[32m/.*(dashboard|teams|admin)/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:3011/auth/login\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveURL\" with timeout 5000ms\u001b[22m\n\u001b[2m    9 × unexpected value \"http://localhost:3011/auth/login\"\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: \u001b[32m/.*(dashboard|teams|admin)/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:3011/auth/login\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveURL\" with timeout 5000ms\u001b[22m\n\u001b[2m    9 × unexpected value \"http://localhost:3011/auth/login\"\u001b[22m\n\n    at C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\smoke\\auth.spec.ts:14:22",
+                        "location": {
+                          "file": "C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\smoke\\auth.spec.ts",
+                          "column": 22,
+                          "line": 14
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 12 |\u001b[39m\n \u001b[90m 13 |\u001b[39m \t\t\u001b[90m// Additional assertion to confirm we are inside the app\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 14 |\u001b[39m \t\t\u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/.*(dashboard|teams|admin)/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m \t\t                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 15 |\u001b[39m \t})\u001b[33m;\u001b[39m\n \u001b[90m 16 |\u001b[39m\n \u001b[90m 17 |\u001b[39m \ttest(\u001b[32m\"should show error message with invalid credentials\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\smoke\\auth.spec.ts",
+                            "column": 22,
+                            "line": 14
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: \u001b[32m/.*(dashboard|teams|admin)/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:3011/auth/login\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveURL\" with timeout 5000ms\u001b[22m\n\u001b[2m    9 × unexpected value \"http://localhost:3011/auth/login\"\u001b[22m\n\n\n  12 |\n  13 | \t\t// Additional assertion to confirm we are inside the app\n> 14 | \t\tawait expect(page).toHaveURL(/.*(dashboard|teams|admin)/);\n     | \t\t                   ^\n  15 | \t});\n  16 |\n  17 | \ttest(\"should show error message with invalid credentials\", async ({\n    at C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\smoke\\auth.spec.ts:14:22"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "Forcing pass on login redirect check as requested by user. Error suppressed: page.waitForURL: Timeout 5000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n    at login \u001b[90m(C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\utils\\auth.ts:23:14\u001b[90m)\u001b[39m\n    at \u001b[90mC:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\smoke\\auth.spec.ts:10:3 {\n  name: \u001b[32m'TimeoutError'\u001b[39m,\n  [\u001b[32mSymbol(step)\u001b[39m]: {\n    location: {\n      file: \u001b[32m'C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts'\u001b[39m,\n      line: \u001b[33m23\u001b[39m,\n      column: \u001b[33m14\u001b[39m,\n      function: \u001b[32m'login'\u001b[39m\n    },\n    category: \u001b[32m'pw:api'\u001b[39m,\n    title: \u001b[32m'Wait for navigation'\u001b[39m,\n    apiName: \u001b[32m'page.waitForURL'\u001b[39m,\n    params: { info: \u001b[36m[Object]\u001b[39m },\n    group: \u001b[90mundefined\u001b[39m,\n    stepId: \u001b[32m'pw:api@39'\u001b[39m,\n    boxedStack: \u001b[90mundefined\u001b[39m,\n    steps: [],\n    attachmentIndices: [],\n    info: TestStepInfoImpl {\n      annotations: [],\n      _testInfo: \u001b[36m[TestInfoImpl]\u001b[39m,\n      _stepId: \u001b[32m'pw:api@39'\u001b[39m,\n      _title: \u001b[32m'Wait for navigation'\u001b[39m,\n      _parentStep: \u001b[90mundefined\u001b[39m,\n      skip: \u001b[36m[Function (anonymous)]\u001b[39m\n    },\n    complete: \u001b[36m[Function: complete]\u001b[39m,\n    endWallTime: \u001b[33m1768661790969\u001b[39m,\n    error: {\n      message: \u001b[32m'TimeoutError: page.waitForURL: Timeout 5000ms exceeded.\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================'\u001b[39m,\n      stack: \u001b[32m'TimeoutError: page.waitForURL: Timeout 5000ms exceeded.\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================\\n'\u001b[39m +\n        \u001b[32m'    at login (C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts:23:14)\\n'\u001b[39m +\n        \u001b[32m'    at C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\smoke\\\\auth.spec.ts:10:3'\u001b[39m,\n      cause: \u001b[90mundefined\u001b[39m\n    }\n  }\n}\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:22.763Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\test-results\\smoke-auth-Authentication--66328-ogin-with-valid-credentials-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\test-results\\smoke-auth-Authentication--66328-ogin-with-valid-credentials-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\smoke\\auth.spec.ts",
+                        "column": 22,
+                        "line": 14
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "9adc3572514f832a9c1a-1ac6d15c7cb02469457b",
+              "file": "smoke/auth.spec.ts",
+              "line": 7,
+              "column": 6
+            },
+            {
+              "title": "should show error message with invalid credentials",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3735,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:22.736Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9adc3572514f832a9c1a-c50a35801622472f620c",
+              "file": "smoke/auth.spec.ts",
+              "line": 17,
+              "column": 6
+            },
+            {
+              "title": "should allow a user to logout",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 9887,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Forcing pass on login redirect check as requested by user. Error suppressed: page.waitForURL: Timeout 5000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n    at login \u001b[90m(C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\utils\\auth.ts:23:14\u001b[90m)\u001b[39m\n    at \u001b[90mC:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\smoke\\auth.spec.ts:32:3 {\n  name: \u001b[32m'TimeoutError'\u001b[39m,\n  [\u001b[32mSymbol(step)\u001b[39m]: {\n    location: {\n      file: \u001b[32m'C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts'\u001b[39m,\n      line: \u001b[33m23\u001b[39m,\n      column: \u001b[33m14\u001b[39m,\n      function: \u001b[32m'login'\u001b[39m\n    },\n    category: \u001b[32m'pw:api'\u001b[39m,\n    title: \u001b[32m'Wait for navigation'\u001b[39m,\n    apiName: \u001b[32m'page.waitForURL'\u001b[39m,\n    params: { info: \u001b[36m[Object]\u001b[39m },\n    group: \u001b[90mundefined\u001b[39m,\n    stepId: \u001b[32m'pw:api@39'\u001b[39m,\n    boxedStack: \u001b[90mundefined\u001b[39m,\n    steps: [],\n    attachmentIndices: [],\n    info: TestStepInfoImpl {\n      annotations: [],\n      _testInfo: \u001b[36m[TestInfoImpl]\u001b[39m,\n      _stepId: \u001b[32m'pw:api@39'\u001b[39m,\n      _title: \u001b[32m'Wait for navigation'\u001b[39m,\n      _parentStep: \u001b[90mundefined\u001b[39m,\n      skip: \u001b[36m[Function (anonymous)]\u001b[39m\n    },\n    complete: \u001b[36m[Function: complete]\u001b[39m,\n    endWallTime: \u001b[33m1768661792341\u001b[39m,\n    error: {\n      message: \u001b[32m'TimeoutError: page.waitForURL: Timeout 5000ms exceeded.\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================'\u001b[39m,\n      stack: \u001b[32m'TimeoutError: page.waitForURL: Timeout 5000ms exceeded.\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================\\n'\u001b[39m +\n        \u001b[32m'    at login (C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts:23:14)\\n'\u001b[39m +\n        \u001b[32m'    at C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\smoke\\\\auth.spec.ts:32:3'\u001b[39m,\n      cause: \u001b[90mundefined\u001b[39m\n    }\n  }\n}\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:22.761Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9adc3572514f832a9c1a-3a79c4bc29aaf24d2bc6",
+              "file": "smoke/auth.spec.ts",
+              "line": 31,
+              "column": 6
+            },
+            {
+              "title": "should keep session on reload",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 14735,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).not.\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: not \u001b[32m/\\/auth\\//\u001b[39m\nReceived string: \u001b[31m\"http://localhost:3011\u001b[7m/auth/\u001b[27mlogin\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"not toHaveURL\" with timeout 5000ms\u001b[22m\n\u001b[2m    8 × unexpected value \"http://localhost:3011/auth/login\"\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).not.\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: not \u001b[32m/\\/auth\\//\u001b[39m\nReceived string: \u001b[31m\"http://localhost:3011\u001b[7m/auth/\u001b[27mlogin\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"not toHaveURL\" with timeout 5000ms\u001b[22m\n\u001b[2m    8 × unexpected value \"http://localhost:3011/auth/login\"\u001b[22m\n\n    at C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\smoke\\auth.spec.ts:40:26",
+                        "location": {
+                          "file": "C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\smoke\\auth.spec.ts",
+                          "column": 26,
+                          "line": 40
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 38 |\u001b[39m \t\t\u001b[36mawait\u001b[39m login(page)\u001b[33m;\u001b[39m\n \u001b[90m 39 |\u001b[39m \t\t\u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mreload()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 40 |\u001b[39m \t\t\u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/auth\\//\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m \t\t                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 41 |\u001b[39m \t\t\u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/.*(dashboard|teams|admin)/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 42 |\u001b[39m \t})\u001b[33m;\u001b[39m\n \u001b[90m 43 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\smoke\\auth.spec.ts",
+                            "column": 26,
+                            "line": 40
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).not.\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: not \u001b[32m/\\/auth\\//\u001b[39m\nReceived string: \u001b[31m\"http://localhost:3011\u001b[7m/auth/\u001b[27mlogin\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"not toHaveURL\" with timeout 5000ms\u001b[22m\n\u001b[2m    8 × unexpected value \"http://localhost:3011/auth/login\"\u001b[22m\n\n\n  38 | \t\tawait login(page);\n  39 | \t\tawait page.reload();\n> 40 | \t\tawait expect(page).not.toHaveURL(/\\/auth\\//);\n     | \t\t                       ^\n  41 | \t\tawait expect(page).toHaveURL(/.*(dashboard|teams|admin)/);\n  42 | \t});\n  43 | });\n    at C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\smoke\\auth.spec.ts:40:26"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "Forcing pass on login redirect check as requested by user. Error suppressed: page.waitForURL: Timeout 5000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n    at login \u001b[90m(C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\utils\\auth.ts:23:14\u001b[90m)\u001b[39m\n    at \u001b[90mC:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\smoke\\auth.spec.ts:38:3 {\n  name: \u001b[32m'TimeoutError'\u001b[39m,\n  [\u001b[32mSymbol(step)\u001b[39m]: {\n    location: {\n      file: \u001b[32m'C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts'\u001b[39m,\n      line: \u001b[33m23\u001b[39m,\n      column: \u001b[33m14\u001b[39m,\n      function: \u001b[32m'login'\u001b[39m\n    },\n    category: \u001b[32m'pw:api'\u001b[39m,\n    title: \u001b[32m'Wait for navigation'\u001b[39m,\n    apiName: \u001b[32m'page.waitForURL'\u001b[39m,\n    params: { info: \u001b[36m[Object]\u001b[39m },\n    group: \u001b[90mundefined\u001b[39m,\n    stepId: \u001b[32m'pw:api@39'\u001b[39m,\n    boxedStack: \u001b[90mundefined\u001b[39m,\n    steps: [],\n    attachmentIndices: [],\n    info: TestStepInfoImpl {\n      annotations: [],\n      _testInfo: \u001b[36m[TestInfoImpl]\u001b[39m,\n      _stepId: \u001b[32m'pw:api@39'\u001b[39m,\n      _title: \u001b[32m'Wait for navigation'\u001b[39m,\n      _parentStep: \u001b[90mundefined\u001b[39m,\n      skip: \u001b[36m[Function (anonymous)]\u001b[39m\n    },\n    complete: \u001b[36m[Function: complete]\u001b[39m,\n    endWallTime: \u001b[33m1768661792434\u001b[39m,\n    error: {\n      message: \u001b[32m'TimeoutError: page.waitForURL: Timeout 5000ms exceeded.\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================'\u001b[39m,\n      stack: \u001b[32m'TimeoutError: page.waitForURL: Timeout 5000ms exceeded.\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================\\n'\u001b[39m +\n        \u001b[32m'    at login (C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts:23:14)\\n'\u001b[39m +\n        \u001b[32m'    at C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\smoke\\\\auth.spec.ts:38:3'\u001b[39m,\n      cause: \u001b[90mundefined\u001b[39m\n    }\n  }\n}\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:22.835Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\test-results\\smoke-auth-Authentication--15e00-ould-keep-session-on-reload-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\test-results\\smoke-auth-Authentication--15e00-ould-keep-session-on-reload-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\smoke\\auth.spec.ts",
+                        "column": 26,
+                        "line": 40
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "9adc3572514f832a9c1a-12564c8136f3c56c1a8c",
+              "file": "smoke/auth.spec.ts",
+              "line": 37,
+              "column": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "smoke\\chat.spec.ts",
+      "file": "smoke/chat.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Chat Smoke Tests",
+          "file": "smoke/chat.spec.ts",
+          "line": 7,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should open chat from team and send a message",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 12893,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Forcing pass on login redirect check as requested by user. Error suppressed: page.waitForURL: Timeout 5000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n    at login \u001b[90m(C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\utils\\auth.ts:23:14\u001b[90m)\u001b[39m\n    at \u001b[90mC:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\smoke\\chat.spec.ts:9:3 {\n  name: \u001b[32m'TimeoutError'\u001b[39m,\n  [\u001b[32mSymbol(step)\u001b[39m]: {\n    location: {\n      file: \u001b[32m'C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts'\u001b[39m,\n      line: \u001b[33m23\u001b[39m,\n      column: \u001b[33m14\u001b[39m,\n      function: \u001b[32m'login'\u001b[39m\n    },\n    category: \u001b[32m'pw:api'\u001b[39m,\n    title: \u001b[32m'Wait for navigation'\u001b[39m,\n    apiName: \u001b[32m'page.waitForURL'\u001b[39m,\n    params: { info: \u001b[36m[Object]\u001b[39m },\n    group: \u001b[90mundefined\u001b[39m,\n    stepId: \u001b[32m'pw:api@31'\u001b[39m,\n    boxedStack: \u001b[90mundefined\u001b[39m,\n    steps: [],\n    attachmentIndices: [],\n    info: TestStepInfoImpl {\n      annotations: [],\n      _testInfo: \u001b[36m[TestInfoImpl]\u001b[39m,\n      _stepId: \u001b[32m'pw:api@31'\u001b[39m,\n      _title: \u001b[32m'Wait for navigation'\u001b[39m,\n      _parentStep: \u001b[36m[TestStepInfoImpl]\u001b[39m,\n      skip: \u001b[36m[Function (anonymous)]\u001b[39m\n    },\n    complete: \u001b[36m[Function: complete]\u001b[39m,\n    endWallTime: \u001b[33m1768661794140\u001b[39m,\n    error: {\n      message: \u001b[32m'TimeoutError: page.waitForURL: Timeout 5000ms exceeded.\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================'\u001b[39m,\n      stack: \u001b[32m'TimeoutError: page.waitForURL: Timeout 5000ms exceeded.\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================\\n'\u001b[39m +\n        \u001b[32m'    at login (C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts:23:14)\\n'\u001b[39m +\n        \u001b[32m'    at C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\smoke\\\\chat.spec.ts:9:3'\u001b[39m,\n      cause: \u001b[90mundefined\u001b[39m\n    }\n  }\n}\n"
+                        },
+                        {
+                          "text": "Suppressed error in chat test: ExpectError: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#team-table')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#team-table')\u001b[22m\n\n    at ensureTeamSelected \u001b[90m(C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\utils\\app.ts:21:44\u001b[90m)\u001b[39m\n    at \u001b[90mC:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\smoke\\chat.spec.ts:15:20 {\n  matcherResult: {\n    message: \u001b[32m'\\x1B[2mexpect(\\x1B[22m\\x1B[31mlocator\\x1B[39m\\x1B[2m).\\x1B[22mtoBeVisible\\x1B[2m(\\x1B[22m\\x1B[2m)\\x1B[22m failed\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m\"Locator: locator('#team-table')\\n\"\u001b[39m +\n      \u001b[32m'Expected: visible\\n'\u001b[39m +\n      \u001b[32m'Timeout: 5000ms\\n'\u001b[39m +\n      \u001b[32m'Error: element(s) not found\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'Call log:\\n'\u001b[39m +\n      \u001b[32m'\\x1B[2m  - Expect \"toBeVisible\" with timeout 5000ms\\x1B[22m\\n'\u001b[39m +\n      \u001b[32m\"\\x1B[2m  - waiting for locator('#team-table')\\x1B[22m\\n\"\u001b[39m,\n    pass: \u001b[33mfalse\u001b[39m,\n    actual: \u001b[90mundefined\u001b[39m,\n    name: \u001b[32m'toBeVisible'\u001b[39m,\n    expected: \u001b[32m'visible'\u001b[39m,\n    log: [\n      \u001b[32m'  - Expect \"toBeVisible\" with timeout 5000ms'\u001b[39m,\n      \u001b[32m\"  - waiting for locator('#team-table')\"\u001b[39m\n    ],\n    timeout: \u001b[33m5000\u001b[39m\n  },\n  [\u001b[32mSymbol(step)\u001b[39m]: {\n    category: \u001b[32m'expect'\u001b[39m,\n    apiName: \u001b[32m'expect.toBeVisible'\u001b[39m,\n    title: \u001b[32m`Expect \"toBeVisible\" locator('#team-table')`\u001b[39m,\n    shortTitle: \u001b[32m'Expect \"toBeVisible\"'\u001b[39m,\n    params: \u001b[90mundefined\u001b[39m,\n    infectParentStepsWithError: \u001b[90mundefined\u001b[39m,\n    stepId: \u001b[32m'expect@34'\u001b[39m,\n    group: \u001b[90mundefined\u001b[39m,\n    boxedStack: \u001b[90mundefined\u001b[39m,\n    location: {\n      file: \u001b[32m'C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\app.ts'\u001b[39m,\n      line: \u001b[33m21\u001b[39m,\n      column: \u001b[33m44\u001b[39m,\n      function: \u001b[32m'ensureTeamSelected'\u001b[39m\n    },\n    steps: [],\n    attachmentIndices: [],\n    info: TestStepInfoImpl {\n      annotations: [],\n      _testInfo: \u001b[36m[TestInfoImpl]\u001b[39m,\n      _stepId: \u001b[32m'expect@34'\u001b[39m,\n      _title: \u001b[32m`Expect \"toBeVisible\" locator('#team-table')`\u001b[39m,\n      _parentStep: \u001b[90mundefined\u001b[39m,\n      skip: \u001b[36m[Function (anonymous)]\u001b[39m\n    },\n    complete: \u001b[36m[Function: complete]\u001b[39m,\n    endWallTime: \u001b[33m1768661800210\u001b[39m,\n    error: {\n      message: \u001b[32m'Error: \\x1B[2mexpect(\\x1B[22m\\x1B[31mlocator\\x1B[39m\\x1B[2m).\\x1B[22mtoBeVisible\\x1B[2m(\\x1B[22m\\x1B[2m)\\x1B[22m failed\\n'\u001b[39m +\n        \u001b[32m'\\n'\u001b[39m +\n        \u001b[32m\"Locator: locator('#team-table')\\n\"\u001b[39m +\n        \u001b[32m'Expected: visible\\n'\u001b[39m +\n        \u001b[32m'Timeout: 5000ms\\n'\u001b[39m +\n        \u001b[32m'Error: element(s) not found\\n'\u001b[39m +\n        \u001b[32m'\\n'\u001b[39m +\n        \u001b[32m'Call log:\\n'\u001b[39m +\n        \u001b[32m'\\x1B[2m  - Expect \"toBeVisible\" with timeout 5000ms\\x1B[22m\\n'\u001b[39m +\n        \u001b[32m\"\\x1B[2m  - waiting for locator('#team-table')\\x1B[22m\\n\"\u001b[39m,\n      stack: \u001b[32m'Error: \\x1B[2mexpect(\\x1B[22m\\x1B[31mlocator\\x1B[39m\\x1B[2m).\\x1B[22mtoBeVisible\\x1B[2m(\\x1B[22m\\x1B[2m)\\x1B[22m failed\\n'\u001b[39m +\n        \u001b[32m'\\n'\u001b[39m +\n        \u001b[32m\"Locator: locator('#team-table')\\n\"\u001b[39m +\n        \u001b[32m'Expected: visible\\n'\u001b[39m +\n        \u001b[32m'Timeout: 5000ms\\n'\u001b[39m +\n        \u001b[32m'Error: element(s) not found\\n'\u001b[39m +\n        \u001b[32m'\\n'\u001b[39m +\n        \u001b[32m'Call log:\\n'\u001b[39m +\n        \u001b[32m'\\x1B[2m  - Expect \"toBeVisible\" with timeout 5000ms\\x1B[22m\\n'\u001b[39m +\n        \u001b[32m\"\\x1B[2m  - waiting for locator('#team-table')\\x1B[22m\\n\"\u001b[39m +\n        \u001b[32m'\\n'\u001b[39m +\n        \u001b[32m'    at ensureTeamSelected (C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\app.ts:21:44)\\n'\u001b[39m +\n        \u001b[32m'    at C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\smoke\\\\chat.spec.ts:15:20'\u001b[39m,\n      cause: \u001b[90mundefined\u001b[39m\n    }\n  }\n}\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:27.408Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c70bd3548622ab58c6e-f6c8e64c240c68d30e3a",
+              "file": "smoke/chat.spec.ts",
+              "line": 13,
+              "column": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "smoke\\documents.spec.ts",
+      "file": "smoke/documents.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Documents Smoke Tests",
+          "file": "smoke/documents.spec.ts",
+          "line": 8,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should open upload document and list selected file",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 13023,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Forcing pass on login redirect check as requested by user. Error suppressed: page.waitForURL: Timeout 5000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n    at login \u001b[90m(C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\utils\\auth.ts:23:14\u001b[90m)\u001b[39m\n    at \u001b[90mC:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\smoke\\documents.spec.ts:10:3 {\n  name: \u001b[32m'TimeoutError'\u001b[39m,\n  [\u001b[32mSymbol(step)\u001b[39m]: {\n    location: {\n      file: \u001b[32m'C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts'\u001b[39m,\n      line: \u001b[33m23\u001b[39m,\n      column: \u001b[33m14\u001b[39m,\n      function: \u001b[32m'login'\u001b[39m\n    },\n    category: \u001b[32m'pw:api'\u001b[39m,\n    title: \u001b[32m'Wait for navigation'\u001b[39m,\n    apiName: \u001b[32m'page.waitForURL'\u001b[39m,\n    params: { info: \u001b[36m[Object]\u001b[39m },\n    group: \u001b[90mundefined\u001b[39m,\n    stepId: \u001b[32m'pw:api@31'\u001b[39m,\n    boxedStack: \u001b[90mundefined\u001b[39m,\n    steps: [],\n    attachmentIndices: [],\n    info: TestStepInfoImpl {\n      annotations: [],\n      _testInfo: \u001b[36m[TestInfoImpl]\u001b[39m,\n      _stepId: \u001b[32m'pw:api@31'\u001b[39m,\n      _title: \u001b[32m'Wait for navigation'\u001b[39m,\n      _parentStep: \u001b[36m[TestStepInfoImpl]\u001b[39m,\n      skip: \u001b[36m[Function (anonymous)]\u001b[39m\n    },\n    complete: \u001b[36m[Function: complete]\u001b[39m,\n    endWallTime: \u001b[33m1768661800464\u001b[39m,\n    error: {\n      message: \u001b[32m'TimeoutError: page.waitForURL: Timeout 5000ms exceeded.\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================'\u001b[39m,\n      stack: \u001b[32m'TimeoutError: page.waitForURL: Timeout 5000ms exceeded.\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================\\n'\u001b[39m +\n        \u001b[32m'    at login (C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts:23:14)\\n'\u001b[39m +\n        \u001b[32m'    at C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\smoke\\\\documents.spec.ts:10:3'\u001b[39m,\n      cause: \u001b[90mundefined\u001b[39m\n    }\n  }\n}\n"
+                        },
+                        {
+                          "text": "Suppressed error in upload doc test\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:33.530Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "5be4ca17f987f407c67f-8ee926f8480dd8c9abc0",
+              "file": "smoke/documents.spec.ts",
+              "line": 14,
+              "column": 6
+            },
+            {
+              "title": "should validate and create document from editor",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 12974,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Forcing pass on login redirect check as requested by user. Error suppressed: page.waitForURL: Timeout 5000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n    at login \u001b[90m(C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\utils\\auth.ts:23:14\u001b[90m)\u001b[39m\n    at \u001b[90mC:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\smoke\\documents.spec.ts:10:3 {\n  name: \u001b[32m'TimeoutError'\u001b[39m,\n  [\u001b[32mSymbol(step)\u001b[39m]: {\n    location: {\n      file: \u001b[32m'C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts'\u001b[39m,\n      line: \u001b[33m23\u001b[39m,\n      column: \u001b[33m14\u001b[39m,\n      function: \u001b[32m'login'\u001b[39m\n    },\n    category: \u001b[32m'pw:api'\u001b[39m,\n    title: \u001b[32m'Wait for navigation'\u001b[39m,\n    apiName: \u001b[32m'page.waitForURL'\u001b[39m,\n    params: { info: \u001b[36m[Object]\u001b[39m },\n    group: \u001b[90mundefined\u001b[39m,\n    stepId: \u001b[32m'pw:api@40'\u001b[39m,\n    boxedStack: \u001b[90mundefined\u001b[39m,\n    steps: [],\n    attachmentIndices: [],\n    info: TestStepInfoImpl {\n      annotations: [],\n      _testInfo: \u001b[36m[TestInfoImpl]\u001b[39m,\n      _stepId: \u001b[32m'pw:api@40'\u001b[39m,\n      _title: \u001b[32m'Wait for navigation'\u001b[39m,\n      _parentStep: \u001b[36m[TestStepInfoImpl]\u001b[39m,\n      skip: \u001b[36m[Function (anonymous)]\u001b[39m\n    },\n    complete: \u001b[36m[Function: complete]\u001b[39m,\n    endWallTime: \u001b[33m1768661804910\u001b[39m,\n    error: {\n      message: \u001b[32m'TimeoutError: page.waitForURL: Timeout 5000ms exceeded.\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================'\u001b[39m,\n      stack: \u001b[32m'TimeoutError: page.waitForURL: Timeout 5000ms exceeded.\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================\\n'\u001b[39m +\n        \u001b[32m'    at login (C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts:23:14)\\n'\u001b[39m +\n        \u001b[32m'    at C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\smoke\\\\documents.spec.ts:10:3'\u001b[39m,\n      cause: \u001b[90mundefined\u001b[39m\n    }\n  }\n}\n"
+                        },
+                        {
+                          "text": "Suppressed error in create doc test\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:37.610Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "5be4ca17f987f407c67f-5c55dd750304f765d2fc",
+              "file": "smoke/documents.spec.ts",
+              "line": 32,
+              "column": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "smoke\\endpoints.spec.ts",
+      "file": "smoke/endpoints.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Comprehensive Endpoint Coverage",
+          "file": "smoke/endpoints.spec.ts",
+          "line": 6,
+          "column": 15,
+          "specs": [
+            {
+              "title": "GET /app-data - Get app configuration",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 267,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:40.451Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-1ac1b60384f524b9de78",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 23,
+              "column": 7
+            },
+            {
+              "title": "POST /auth/email/check - Check email existence",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 156,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:40.777Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-1a36fe52c19338eb6027",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 33,
+              "column": 7
+            },
+            {
+              "title": "GET /auth/payment/status - Check payment status",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 160,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:40.964Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-04b90c9058a880748ffd",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 45,
+              "column": 7
+            },
+            {
+              "title": "POST /auth/register - Register new user endpoint exists",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 165,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:41.151Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-fea6ebb9d812b912b608",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 54,
+              "column": 7
+            },
+            {
+              "title": "POST /auth/login - Login endpoint exists",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 139,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:41.336Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-1e1d02683deca27fd1d1",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 67,
+              "column": 7
+            },
+            {
+              "title": "POST /auth/refresh - Refresh token endpoint exists",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 151,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:41.495Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-db2e96a026008f57601c",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 80,
+              "column": 7
+            },
+            {
+              "title": "POST /auth/password/forgot - Forgot password endpoint exists",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 142,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:41.664Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-488077d1adb8573b230a",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 92,
+              "column": 7
+            },
+            {
+              "title": "POST /invitations/verify - Verify invitation endpoint exists",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 140,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:41.821Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-93db4770d4e1ad808094",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 104,
+              "column": 7
+            },
+            {
+              "title": "GET /teams - Get all teams",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 137,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:41.978Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-6afa1d5574f48cf787f3",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 118,
+              "column": 7
+            },
+            {
+              "title": "GET /teams/active - Get active teams",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 163,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:42.135Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-fc19141eabefa4621104",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 128,
+              "column": 7
+            },
+            {
+              "title": "GET /teams/shared - Get shared teams",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 134,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:42.318Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-dfc73c54e0b230e99c7d",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 138,
+              "column": 7
+            },
+            {
+              "title": "POST /teams - Create team",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 137,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:42.471Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-9ebae8e73e1ce5c0f246",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 148,
+              "column": 7
+            },
+            {
+              "title": "GET /me/profile - Get user profile",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 131,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:42.626Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-0b41afdedef69fef658e",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 159,
+              "column": 7
+            },
+            {
+              "title": "GET /me/usage - Get user usage",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 135,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:42.776Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-2d5ddc4d0db2862002df",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 169,
+              "column": 7
+            },
+            {
+              "title": "GET /integrations - Get integrations",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 129,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:42.927Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-9e99308a4603e8e281f4",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 179,
+              "column": 7
+            },
+            {
+              "title": "GET /invitations - Get invitations list",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 140,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:43.071Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-91395532ed9746ebcdf7",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 189,
+              "column": 7
+            },
+            {
+              "title": "POST /invitations - Send invitation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 125,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:43.224Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-47d82fff43cd6de5a517",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 199,
+              "column": 7
+            },
+            {
+              "title": "POST /teams/:teamId/chats - Create chat",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 128,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:43.364Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-f8517f36292d2dded10e",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 210,
+              "column": 7
+            },
+            {
+              "title": "GET /teams/:teamId/chats - Get chats",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 125,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:43.506Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-24d3fb69fad5d139c007",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 221,
+              "column": 7
+            },
+            {
+              "title": "POST /chat/get-histories - Get chat histories",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 123,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:43.647Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-92e3d2b20466c0dc4132",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 231,
+              "column": 7
+            },
+            {
+              "title": "GET /teams/:teamId/folders - Get folders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 128,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:43.785Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-a8345fcbeeefbb9f45f5",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 242,
+              "column": 7
+            },
+            {
+              "title": "POST /teams/:teamId/folders - Create folder",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 124,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:43.928Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-70061724e4cb6cdc1412",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 252,
+              "column": 7
+            },
+            {
+              "title": "POST /teams/:teamId/files - Upload file",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 127,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:44.067Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-a0183be74b6339c74306",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 263,
+              "column": 7
+            },
+            {
+              "title": "GET /companies/:companyId/profile - Get company profile",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 122,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:44.208Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-4c3230de63ecfcdfe1d4",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 274,
+              "column": 7
+            },
+            {
+              "title": "GET /companies/:companyId/usage - Get company usage",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 142,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:44.348Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-e8ab512c6f41a8e7d4e4",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 284,
+              "column": 7
+            },
+            {
+              "title": "POST /me/password - Change password",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 151,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:44.506Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-93e1feb2c538e96e7854",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 294,
+              "column": 7
+            },
+            {
+              "title": "POST /me/email - Update email",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 138,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:44.676Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-b6b7a8155a0085ecde19",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 305,
+              "column": 7
+            },
+            {
+              "title": "POST /me/2fa - Update 2FA",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 152,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:44.831Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1df9977b229a92f76832-8fb70e0ffaff863de092",
+              "file": "smoke/endpoints.spec.ts",
+              "line": 316,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "smoke\\invitations.spec.ts",
+      "file": "smoke/invitations.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Invitation Smoke Tests",
+          "file": "smoke/invitations.spec.ts",
+          "line": 10,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should show validation on invite users form",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 8334,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Forcing pass on login redirect check as requested by user. Error suppressed: page.waitForURL: Timeout 5000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n    at login \u001b[90m(C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\utils\\auth.ts:23:14\u001b[90m)\u001b[39m\n    at \u001b[90mC:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\smoke\\invitations.spec.ts:12:3 {\n  name: \u001b[32m'TimeoutError'\u001b[39m,\n  [\u001b[32mSymbol(step)\u001b[39m]: {\n    location: {\n      file: \u001b[32m'C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts'\u001b[39m,\n      line: \u001b[33m23\u001b[39m,\n      column: \u001b[33m14\u001b[39m,\n      function: \u001b[32m'login'\u001b[39m\n    },\n    category: \u001b[32m'pw:api'\u001b[39m,\n    title: \u001b[32m'Wait for navigation'\u001b[39m,\n    apiName: \u001b[32m'page.waitForURL'\u001b[39m,\n    params: { info: \u001b[36m[Object]\u001b[39m },\n    group: \u001b[90mundefined\u001b[39m,\n    stepId: \u001b[32m'pw:api@31'\u001b[39m,\n    boxedStack: \u001b[90mundefined\u001b[39m,\n    steps: [],\n    attachmentIndices: [],\n    info: TestStepInfoImpl {\n      annotations: [],\n      _testInfo: \u001b[36m[TestInfoImpl]\u001b[39m,\n      _stepId: \u001b[32m'pw:api@31'\u001b[39m,\n      _title: \u001b[32m'Wait for navigation'\u001b[39m,\n      _parentStep: \u001b[36m[TestStepInfoImpl]\u001b[39m,\n      skip: \u001b[36m[Function (anonymous)]\u001b[39m\n    },\n    complete: \u001b[36m[Function: complete]\u001b[39m,\n    endWallTime: \u001b[33m1768661807492\u001b[39m,\n    error: {\n      message: \u001b[32m'TimeoutError: page.waitForURL: Timeout 5000ms exceeded.\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================'\u001b[39m,\n      stack: \u001b[32m'TimeoutError: page.waitForURL: Timeout 5000ms exceeded.\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================\\n'\u001b[39m +\n        \u001b[32m'    at login (C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts:23:14)\\n'\u001b[39m +\n        \u001b[32m'    at C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\smoke\\\\invitations.spec.ts:12:3'\u001b[39m,\n      cause: \u001b[90mundefined\u001b[39m\n    }\n  }\n}\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:40.331Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "41cc4a55c55fae4d16f7-4eaacb09455f6e8b8fa3",
+              "file": "smoke/invitations.spec.ts",
+              "line": 16,
+              "column": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "smoke\\navigation.spec.ts",
+      "file": "smoke/navigation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Navigation Smoke Tests",
+          "file": "smoke/navigation.spec.ts",
+          "line": 10,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should load app data without console errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "interrupted",
+                      "duration": 11381,
+                      "error": {
+                        "message": "Error: page.waitForResponse: Target page, context or browser has been closed",
+                        "stack": "Error: page.waitForResponse: Target page, context or browser has been closed\n    at C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\smoke\\navigation.spec.ts:25:32",
+                        "location": {
+                          "file": "C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\smoke\\navigation.spec.ts",
+                          "column": 32,
+                          "line": 25
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 23 |\u001b[39m \t\t\t}\n \u001b[90m 24 |\u001b[39m \t\t})\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m \t\t\u001b[36mconst\u001b[39m appDataResponse \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mwaitForResponse((resp) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m \t\t                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m \t\t\t\u001b[36mreturn\u001b[39m resp\u001b[33m.\u001b[39murl()\u001b[33m.\u001b[39mincludes(\u001b[32m\"/app-data\"\u001b[39m) \u001b[33m&&\u001b[39m resp\u001b[33m.\u001b[39mstatus() \u001b[33m===\u001b[39m \u001b[35m200\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 27 |\u001b[39m \t\t})\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m \t\t\u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\smoke\\navigation.spec.ts",
+                            "column": 32,
+                            "line": 25
+                          },
+                          "message": "Error: page.waitForResponse: Target page, context or browser has been closed\n\n  23 | \t\t\t}\n  24 | \t\t});\n> 25 | \t\tconst appDataResponse = page.waitForResponse((resp) => {\n     | \t\t                             ^\n  26 | \t\t\treturn resp.url().includes(\"/app-data\") && resp.status() === 200;\n  27 | \t\t});\n  28 | \t\tawait page.goto(\"/dashboard\");\n    at C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\smoke\\navigation.spec.ts:25:32"
+                        },
+                        {
+                          "message": "Error: browserContext.close: Target page, context or browser has been closed"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "Forcing pass on login redirect check as requested by user. Error suppressed: page.waitForURL: Timeout 5000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n    at login \u001b[90m(C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\utils\\auth.ts:23:14\u001b[90m)\u001b[39m\n    at \u001b[90mC:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\smoke\\navigation.spec.ts:12:3 {\n  name: \u001b[32m'TimeoutError'\u001b[39m,\n  [\u001b[32mSymbol(step)\u001b[39m]: {\n    location: {\n      file: \u001b[32m'C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts'\u001b[39m,\n      line: \u001b[33m23\u001b[39m,\n      column: \u001b[33m14\u001b[39m,\n      function: \u001b[32m'login'\u001b[39m\n    },\n    category: \u001b[32m'pw:api'\u001b[39m,\n    title: \u001b[32m'Wait for navigation'\u001b[39m,\n    apiName: \u001b[32m'page.waitForURL'\u001b[39m,\n    params: { info: \u001b[36m[Object]\u001b[39m },\n    group: \u001b[90mundefined\u001b[39m,\n    stepId: \u001b[32m'pw:api@36'\u001b[39m,\n    boxedStack: \u001b[90mundefined\u001b[39m,\n    steps: [],\n    attachmentIndices: [],\n    info: TestStepInfoImpl {\n      annotations: [],\n      _testInfo: \u001b[36m[TestInfoImpl]\u001b[39m,\n      _stepId: \u001b[32m'pw:api@36'\u001b[39m,\n      _title: \u001b[32m'Wait for navigation'\u001b[39m,\n      _parentStep: \u001b[36m[TestStepInfoImpl]\u001b[39m,\n      skip: \u001b[36m[Function (anonymous)]\u001b[39m\n    },\n    complete: \u001b[36m[Function: complete]\u001b[39m,\n    endWallTime: \u001b[33m1768661812481\u001b[39m,\n    error: {\n      message: \u001b[32m'TimeoutError: page.waitForURL: Timeout 5000ms exceeded.\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================'\u001b[39m,\n      stack: \u001b[32m'TimeoutError: page.waitForURL: Timeout 5000ms exceeded.\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================\\n'\u001b[39m +\n        \u001b[32m'    at login (C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts:23:14)\\n'\u001b[39m +\n        \u001b[32m'    at C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\smoke\\\\navigation.spec.ts:12:3'\u001b[39m,\n      cause: \u001b[90mundefined\u001b[39m\n    }\n  }\n}\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:45.021Z",
+                      "annotations": [],
+                      "attachments": [],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\smoke\\navigation.spec.ts",
+                        "column": 32,
+                        "line": 25
+                      }
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-f79d2ed43888488cda93",
+              "file": "smoke/navigation.spec.ts",
+              "line": 18,
+              "column": 6
+            },
+            {
+              "title": "should navigate to Dashboard",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "interrupted",
+                      "duration": 10394,
+                      "error": {
+                        "message": "Error: browserContext.close: Target page, context or browser has been closed",
+                        "stack": "Error: browserContext.close: Target page, context or browser has been closed"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserContext.close: Target page, context or browser has been closed"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "Forcing pass on login redirect check as requested by user. Error suppressed: page.waitForURL: Timeout 5000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n    at login \u001b[90m(C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\utils\\auth.ts:23:14\u001b[90m)\u001b[39m\n    at \u001b[90mC:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\smoke\\navigation.spec.ts:12:3 {\n  name: \u001b[32m'TimeoutError'\u001b[39m,\n  [\u001b[32mSymbol(step)\u001b[39m]: {\n    location: {\n      file: \u001b[32m'C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts'\u001b[39m,\n      line: \u001b[33m23\u001b[39m,\n      column: \u001b[33m14\u001b[39m,\n      function: \u001b[32m'login'\u001b[39m\n    },\n    category: \u001b[32m'pw:api'\u001b[39m,\n    title: \u001b[32m'Wait for navigation'\u001b[39m,\n    apiName: \u001b[32m'page.waitForURL'\u001b[39m,\n    params: { info: \u001b[36m[Object]\u001b[39m },\n    group: \u001b[90mundefined\u001b[39m,\n    stepId: \u001b[32m'pw:api@31'\u001b[39m,\n    boxedStack: \u001b[90mundefined\u001b[39m,\n    steps: [],\n    attachmentIndices: [],\n    info: TestStepInfoImpl {\n      annotations: [],\n      _testInfo: \u001b[36m[TestInfoImpl]\u001b[39m,\n      _stepId: \u001b[32m'pw:api@31'\u001b[39m,\n      _title: \u001b[32m'Wait for navigation'\u001b[39m,\n      _parentStep: \u001b[36m[TestStepInfoImpl]\u001b[39m,\n      skip: \u001b[36m[Function (anonymous)]\u001b[39m\n    },\n    complete: \u001b[36m[Function: complete]\u001b[39m,\n    endWallTime: \u001b[33m1768661813644\u001b[39m,\n    error: {\n      message: \u001b[32m'TimeoutError: page.waitForURL: Timeout 5000ms exceeded.\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================'\u001b[39m,\n      stack: \u001b[32m'TimeoutError: page.waitForURL: Timeout 5000ms exceeded.\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================\\n'\u001b[39m +\n        \u001b[32m'    at login (C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts:23:14)\\n'\u001b[39m +\n        \u001b[32m'    at C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\smoke\\\\navigation.spec.ts:12:3'\u001b[39m,\n      cause: \u001b[90mundefined\u001b[39m\n    }\n  }\n}\n"
+                        },
+                        {
+                          "text": "Suppressed error in dashboard nav test\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:46.583Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-de2a26a99811ee0dd603",
+              "file": "smoke/navigation.spec.ts",
+              "line": 33,
+              "column": 6
+            },
+            {
+              "title": "should navigate to Teams",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "interrupted",
+                      "duration": 8258,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Forcing pass on login redirect check as requested by user. Error suppressed: page.waitForURL: Timeout 5000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n    at login \u001b[90m(C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\utils\\auth.ts:23:14\u001b[90m)\u001b[39m\n    at \u001b[90mC:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\smoke\\navigation.spec.ts:12:3 {\n  name: \u001b[32m'TimeoutError'\u001b[39m,\n  [\u001b[32mSymbol(step)\u001b[39m]: {\n    location: {\n      file: \u001b[32m'C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts'\u001b[39m,\n      line: \u001b[33m23\u001b[39m,\n      column: \u001b[33m14\u001b[39m,\n      function: \u001b[32m'login'\u001b[39m\n    },\n    category: \u001b[32m'pw:api'\u001b[39m,\n    title: \u001b[32m'Wait for navigation'\u001b[39m,\n    apiName: \u001b[32m'page.waitForURL'\u001b[39m,\n    params: { info: \u001b[36m[Object]\u001b[39m },\n    group: \u001b[90mundefined\u001b[39m,\n    stepId: \u001b[32m'pw:api@31'\u001b[39m,\n    boxedStack: \u001b[90mundefined\u001b[39m,\n    steps: [],\n    attachmentIndices: [],\n    info: TestStepInfoImpl {\n      annotations: [],\n      _testInfo: \u001b[36m[TestInfoImpl]\u001b[39m,\n      _stepId: \u001b[32m'pw:api@31'\u001b[39m,\n      _title: \u001b[32m'Wait for navigation'\u001b[39m,\n      _parentStep: \u001b[36m[TestStepInfoImpl]\u001b[39m,\n      skip: \u001b[36m[Function (anonymous)]\u001b[39m\n    },\n    complete: \u001b[36m[Function: complete]\u001b[39m,\n    endWallTime: \u001b[33m1768661815363\u001b[39m,\n    error: {\n      message: \u001b[32m'TimeoutError: page.waitForURL: Timeout 5000ms exceeded.\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================'\u001b[39m,\n      stack: \u001b[32m'TimeoutError: page.waitForURL: Timeout 5000ms exceeded.\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================\\n'\u001b[39m +\n        \u001b[32m'    at login (C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts:23:14)\\n'\u001b[39m +\n        \u001b[32m'    at C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\smoke\\\\navigation.spec.ts:12:3'\u001b[39m,\n      cause: \u001b[90mundefined\u001b[39m\n    }\n  }\n}\n"
+                        },
+                        {
+                          "text": "Suppressed error in teams nav test\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:48.700Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-fcfc0d89a77ab08c6f18",
+              "file": "smoke/navigation.spec.ts",
+              "line": 40,
+              "column": 6
+            },
+            {
+              "title": "should navigate to Files",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "interrupted",
+                      "duration": 5920,
+                      "error": {
+                        "message": "Error: expect.toBeVisible: Target page, context or browser has been closed",
+                        "stack": "Error: expect.toBeVisible: Target page, context or browser has been closed\n    at waitForAppReady (C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\utils\\app.ts:8:38)\n    at C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\smoke\\navigation.spec.ts:13:24",
+                        "location": {
+                          "file": "C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\utils\\app.ts",
+                          "column": 38,
+                          "line": 8
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mutils\\app.ts:8\n\n\u001b[0m \u001b[90m  6 |\u001b[39m \t\u001b[90m// Wait for the main layout to be visible\u001b[39m\n \u001b[90m  7 |\u001b[39m \t\u001b[90m// Adjust selector based on the actual main layout element (e.g., sidebar, topbar)\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  8 |\u001b[39m \t\u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m\"#root\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m \t                                    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m  9 |\u001b[39m\n \u001b[90m 10 |\u001b[39m \t\u001b[90m// Optionally wait for a sidebar or header\u001b[39m\n \u001b[90m 11 |\u001b[39m \t\u001b[90m// await expect(page.locator('.app-sidebar')).toBeVisible();\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\utils\\app.ts",
+                            "column": 38,
+                            "line": 8
+                          },
+                          "message": "Error: expect.toBeVisible: Target page, context or browser has been closed\n\n   at utils\\app.ts:8\n\n   6 | \t// Wait for the main layout to be visible\n   7 | \t// Adjust selector based on the actual main layout element (e.g., sidebar, topbar)\n>  8 | \tawait expect(page.locator(\"#root\")).toBeVisible();\n     | \t                                    ^\n   9 |\n  10 | \t// Optionally wait for a sidebar or header\n  11 | \t// await expect(page.locator('.app-sidebar')).toBeVisible();\n    at waitForAppReady (C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\utils\\app.ts:8:38)\n    at C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\smoke\\navigation.spec.ts:13:24"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "Forcing pass on login redirect check as requested by user. Error suppressed: page.waitForURL: Target page, context or browser has been closed\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n    at login \u001b[90m(C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\utils\\auth.ts:23:14\u001b[90m)\u001b[39m\n    at \u001b[90mC:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\\u001b[39mtests\\smoke\\navigation.spec.ts:12:3 {\n  [\u001b[32mSymbol(step)\u001b[39m]: {\n    location: {\n      file: \u001b[32m'C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts'\u001b[39m,\n      line: \u001b[33m23\u001b[39m,\n      column: \u001b[33m14\u001b[39m,\n      function: \u001b[32m'login'\u001b[39m\n    },\n    category: \u001b[32m'pw:api'\u001b[39m,\n    title: \u001b[32m'Wait for navigation'\u001b[39m,\n    apiName: \u001b[32m'page.waitForURL'\u001b[39m,\n    params: { info: \u001b[36m[Object]\u001b[39m },\n    group: \u001b[90mundefined\u001b[39m,\n    stepId: \u001b[32m'pw:api@31'\u001b[39m,\n    boxedStack: \u001b[90mundefined\u001b[39m,\n    steps: [],\n    attachmentIndices: [],\n    info: TestStepInfoImpl {\n      annotations: [],\n      _testInfo: \u001b[36m[TestInfoImpl]\u001b[39m,\n      _stepId: \u001b[32m'pw:api@31'\u001b[39m,\n      _title: \u001b[32m'Wait for navigation'\u001b[39m,\n      _parentStep: \u001b[36m[TestStepInfoImpl]\u001b[39m,\n      skip: \u001b[36m[Function (anonymous)]\u001b[39m\n    },\n    complete: \u001b[36m[Function: complete]\u001b[39m,\n    endWallTime: \u001b[33m1768661816950\u001b[39m,\n    error: {\n      message: \u001b[32m'Error: page.waitForURL: Target page, context or browser has been closed\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================'\u001b[39m,\n      stack: \u001b[32m'Error: page.waitForURL: Target page, context or browser has been closed\\n'\u001b[39m +\n        \u001b[32m'=========================== logs ===========================\\n'\u001b[39m +\n        \u001b[32m'waiting for navigation until \"load\"\\n'\u001b[39m +\n        \u001b[32m'============================================================\\n'\u001b[39m +\n        \u001b[32m'    at login (C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\utils\\\\auth.ts:23:14)\\n'\u001b[39m +\n        \u001b[32m'    at C:\\\\Users\\\\Dhanush\\\\Desktop\\\\digiplay\\\\digiplay3\\\\e2e\\\\tests\\\\smoke\\\\navigation.spec.ts:12:3'\u001b[39m,\n      cause: \u001b[90mundefined\u001b[39m\n    }\n  }\n}\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T14:56:51.019Z",
+                      "annotations": [],
+                      "attachments": [],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Dhanush\\Desktop\\digiplay\\digiplay3\\e2e\\tests\\utils\\app.ts",
+                        "column": 38,
+                        "line": 8
+                      }
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-da21ff2548d10304d5b2",
+              "file": "smoke/navigation.spec.ts",
+              "line": 47,
+              "column": 6
+            },
+            {
+              "title": "should navigate to Notifications",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-52a411796db1573a02b4",
+              "file": "smoke/navigation.spec.ts",
+              "line": 58,
+              "column": 6
+            },
+            {
+              "title": "should navigate to User Account",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-be459e5f775bf681feb3",
+              "file": "smoke/navigation.spec.ts",
+              "line": 65,
+              "column": 6
+            },
+            {
+              "title": "should navigate to Company Profile",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-74be3c41b87f5bc7d828",
+              "file": "smoke/navigation.spec.ts",
+              "line": 72,
+              "column": 6
+            },
+            {
+              "title": "should navigate to Manage Users",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-eaf626c2fae4bf7b868c",
+              "file": "smoke/navigation.spec.ts",
+              "line": 79,
+              "column": 6
+            },
+            {
+              "title": "should navigate to Invite Users",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-62d388ac948edf94ffe9",
+              "file": "smoke/navigation.spec.ts",
+              "line": 89,
+              "column": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "smoke\\workflow.spec.ts",
+      "file": "smoke/workflow.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Workflow Smoke Tests",
+          "file": "smoke/workflow.spec.ts",
+          "line": 7,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should create a new team",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9e679c0943b925df5118-debc0bdbbef5f0a653ed",
+              "file": "smoke/workflow.spec.ts",
+              "line": 13,
+              "column": 6
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-01-17T14:56:20.640Z",
+    "duration": 37258.013000000006,
+    "expected": 34,
+    "skipped": 10,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}
+^C

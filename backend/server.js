@@ -3,6 +3,7 @@
 const express = require("express");
 const app = express();
 const parser = require("body-parser");
+const cors = require("cors");
 const useragent = require('express-useragent');
 const multer = require("multer");
 const usersRoute = require("./app/routes/user");
@@ -220,6 +221,7 @@ const audioStorage = multer.diskStorage({
 const audioUpload = multer({ storage: audioStorage });
 
 app.use(i18nextMiddleware.handle(i18next));
+app.use(cors());
 app.use(useragent.express());
 
 let credentials;
@@ -1090,7 +1092,7 @@ app.post(
   }
 );
 
-const cors = require("cors");
+
 
 const allowedOrigins = [
   process.env.FRONTEND_BASE_URL,
