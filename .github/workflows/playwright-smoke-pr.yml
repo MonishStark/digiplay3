@@ -412,7 +412,7 @@ jobs:
       - name: Install backend deps
         if: steps.gemini_gate.outputs.block != 'true'
         working-directory: backend
-        run: npm ci --legacy-peer-deps
+        run: npm install --legacy-peer-deps
 
       - name: Seed CI test user
         if: steps.gemini_gate.outputs.block != 'true'
@@ -430,7 +430,7 @@ jobs:
       - name: Install frontend deps
         if: steps.gemini_gate.outputs.block != 'true'
         working-directory: frontend
-        run: npm ci --legacy-peer-deps
+        run: npm install --legacy-peer-deps
 
       - name: Build frontend
         if: steps.gemini_gate.outputs.block != 'true'
@@ -464,7 +464,7 @@ jobs:
       - name: Install e2e deps
         if: steps.gemini_gate.outputs.block != 'true'
         working-directory: e2e
-        run: npm ci
+        run: npm install
 
       - name: Install Playwright browsers
         if: steps.gemini_gate.outputs.block != 'true'
